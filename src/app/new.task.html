@@ -1,0 +1,19 @@
+<h2 mat-dialog-title>Create New Task</h2>
+<mat-dialog-content>
+  <div class="new-task-container">
+    <mat-form-field>
+      <mat-select placeholder="Task Type">
+        <mat-option value="Reading">Reading</mat-option>
+        <mat-option value="Sports">Sports</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Task Name">
+    </mat-form-field>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>No</button>
+  <!-- The mat-dialog-close directive optionally accepts a value as a result for the dialog. -->
+  <button mat-button [mat-dialog-close]="true">Yes</button>
+</mat-dialog-actions>
