@@ -15,11 +15,12 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatButtonModule} from '@angular/material/button';
 import {MatNativeDateModule} from '@angular/material';
 import {MatDatepickerModule} from '@angular/material/datepicker';
+import { NewTaskComponent } from './new-task/new-task.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    NewTask
+    NewTaskComponent
   ],
   imports: [
     BrowserModule,
@@ -38,7 +39,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
     MatDatepickerModule
   ],
   entryComponents: [
-    NewTask
+    NewTaskComponent
   ],
   providers: [
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}}
