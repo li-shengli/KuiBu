@@ -10,7 +10,7 @@ export class NewTaskComponent implements OnInit {
 
   
   constructor(
-    public dialogRef: MatDialogRef<NewTask>,
+    public dialogRef: MatDialogRef<NewTaskComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
 
   onNoClick(): void {
