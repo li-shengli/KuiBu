@@ -16,6 +16,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatNativeDateModule} from '@angular/material';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { NewTaskComponent } from './new-task/new-task.component';
+import {MatCardModule} from '@angular/material/card';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { NewTaskComponent } from './new-task/new-task.component';
     MatButtonModule,
     MatFormFieldModule,
     MatNativeDateModule,
-    MatDatepickerModule
+    MatDatepickerModule,
+    MatCardModule
   ],
   entryComponents: [
     NewTaskComponent

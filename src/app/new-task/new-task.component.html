@@ -2,18 +2,19 @@
 <mat-dialog-content>
   <div class="new-task-container">
     <mat-form-field>
-      <mat-select placeholder="Task Type">
+      <mat-select placeholder="Task Type" [(value)]="taskType">
         <mat-option value="Reading">Reading</mat-option>
         <mat-option value="Sports">Sports</mat-option>
       </mat-select>
     </mat-form-field>
     <mat-form-field>
-      <input matInput placeholder="Task Name">
+      <input matInput placeholder="Book Name">
     </mat-form-field>
     <mat-form-field>
-      <input matInput [matDatepicker]="picker" placeholder="Expected Complete Date">
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
+      <input matInput placeholder="How many days needed to finish this book?">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput placeholder="Total pages of the book">
     </mat-form-field>
   </div>
 </mat-dialog-content>

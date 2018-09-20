@@ -7,7 +7,7 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
   styleUrls: ['./new-task.component.css']
 })
 export class NewTaskComponent implements OnInit {
-
+  taskType = 'Reading';
   
   constructor(
     public dialogRef: MatDialogRef<NewTaskComponent>,
