@@ -17,6 +17,7 @@ import {MatNativeDateModule} from '@angular/material';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { NewTaskComponent } from './new-task/new-task.component';
 import {MatCardModule} from '@angular/material/card';
+import {ChartModule} from 'angular-highcharts';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import {MatCardModule} from '@angular/material/card';
     MatFormFieldModule,
     MatNativeDateModule,
     MatDatepickerModule,
-    MatCardModule
+    MatCardModule,
+    ChartModule
   ],
   entryComponents: [
     NewTaskComponent

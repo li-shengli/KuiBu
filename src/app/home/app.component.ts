@@ -47,7 +47,7 @@ export class AppComponent {
       tickInterval: 50,
       ceiling: 580,
       
-    },
+    }
     series: [
       {
         name: 'Days',
