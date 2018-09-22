@@ -1,46 +1,20 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<mat-toolbar>
-  <span>
-    <img src="assets/img/125495334_31n.jpg" class="img-profile"/>
-  </span>
-  <span class="toolbar-fill-remaining-space"></span>
-  <span>
-    <button color="primary" mat-raised-button (click)="openDialog()">New</button>
-  </span>
-</mat-toolbar>
-<mat-tab-group selectedIndex=1>
-  <mat-tab label="Backlog">Tasks not start yet</mat-tab>
-  <mat-tab label="TodoList">
-    <mat-accordion>
-        <mat-expansion-panel>
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              Reading
-            </mat-panel-title>
-            <mat-panel-description>
-              The Lord of Ring
-            </mat-panel-description>
-          </mat-expansion-panel-header>
-          <mat-progress-bar mode="determinate" value="40"></mat-progress-bar>
-          <label>Current Page &nbsp;</label>
-          <mat-form-field class="input-full-width">
-            <input matInput value="197" (focus)="value=''">
-          </mat-form-field>
-          <div [chart]="chart"></div>
-        </mat-expansion-panel>
-        <mat-expansion-panel>
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              Reading
-            </mat-panel-title>
-            <mat-panel-description>
-              Understand JVM
-            </mat-panel-description>
-          </mat-expansion-panel-header>
-          <mat-progress-bar mode="determinate" value="70"></mat-progress-bar>
-        </mat-expansion-panel>
-    </mat-accordion>
-  </mat-tab>
-  <mat-tab label="Achievement">Tasks have been done</mat-tab>
-</mat-tab-group>  
+<!-- main app container -->
+<div class="jumbotron">
+  <div class="container">
+      <div class="row">
+          <div class="col-sm-6 offset-sm-3">
+              <router-outlet></router-outlet>
+          </div>
+      </div>
+  </div>
+</div>
 
+<!-- credits -->
+<div class="text-center">
+  <p>
+      <a href="http://jasonwatmore.com/post/2018/05/16/angular-6-user-registration-and-login-example-tutorial" target="_top">Angular 6 User Registration and Login Example & Tutorial</a>
+  </p>
+  <p>
+      <a href="http://jasonwatmore.com" target="_top">JasonWatmore.com</a>
+  </p>
+</div>

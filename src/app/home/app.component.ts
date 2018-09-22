@@ -1,11 +1,10 @@
 import { Component, Inject, ViewChild} from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
-import { NewTaskComponent } from './new-task/new-task.component';
+import { NewTaskComponent } from '../new-task/new-task.component';
 import {Chart} from 'angular-highcharts';
 
 
 @Component({
-  selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
@@ -47,11 +46,18 @@ export class AppComponent {
       tickInterval: 50,
       ceiling: 580,
       
-    }
+    },
+    plotOptions: {
+      line: {
+          dataLabels: {
+              enabled: true
+          }
+      }
+    },
     series: [
       {
         name: 'Days',
-        data: [10, 21, 32, 39, 47, 56, 68, 79, 84, 88, 97, 102, 109, 112, 118, 130, 139, 140, 146, 157]
+        data: [[0, 10], [2, 21], [5, 32], [8, 39], [8, 47], [11, 75]]
       }
     ]
   });
