@@ -1,7 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-import {AppComponent} from './home/app.component';
+import { AppComponent }  from './app.component';
+
+import {TaskListComponent} from './home/app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatToolbarModule} from '@angular/material/toolbar';
@@ -34,6 +36,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 @NgModule({
   declarations: [
     AppComponent,
+    TaskListComponent,
     NewTaskComponent,
     AlertComponent,
     HomeComponent,
@@ -57,9 +60,9 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
     MatDatepickerModule,
     MatCardModule,
     ChartModule,
-    routing,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    routing
   ],
   entryComponents: [
     NewTaskComponent
@@ -78,4 +81,4 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
