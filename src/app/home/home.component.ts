@@ -1,6 +1,7 @@
 ﻿import { Component, OnInit, Inject, ViewChild} from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
 import {Chart} from 'angular-highcharts';
+import { NewTaskComponent } from '../new-task/new-task.component';
 
 @Component({
     templateUrl: 'home.component.html',
@@ -17,8 +18,8 @@ export class HomeComponent implements OnInit {
   }
 
   openDialog(): void {
-    const dialogRef = this.dialog.open(HomeComponent, {
-      width: '250px',
+    const dialogRef = this.dialog.open(NewTaskComponent, {
+      width: '350px',
       data: {name: this.name, animal: this.animal}
     });
 
