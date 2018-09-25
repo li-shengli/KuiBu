@@ -31,6 +31,7 @@ import { RegisterComponent } from './register';
 import { fakeBackendProvider } from './_helpers';
 import { ReactiveFormsModule }    from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { ConnectUsComponent } from './connect-us/connect-us.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
     AlertComponent,
     HomeComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    ConnectUsComponent
   ],
   imports: [
     BrowserModule,
@@ -63,7 +65,8 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
     routing
   ],
   entryComponents: [
-    NewTaskComponent
+    NewTaskComponent,
+    ConnectUsComponent
   ],
   providers: [
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}},
