@@ -58,7 +58,7 @@ export class HomeComponent implements OnInit {
     series: [
       {
         name: 'Days',
-        data: [[0, 10], [2, 21], [5, 32], [8, 39], [8, 47], [11, 75]]
+        data: [[0, 0], [2, 21], [5, 32], [7, 39], [8, 47], [11, 75]]
       }
     ]
   });
