@@ -2,8 +2,6 @@
     id: number;
     username: string;
     password: string;
-    firstName: string;
-    lastName: string;
     nickName: string;
     profileUrl: string;
 }
