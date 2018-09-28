@@ -17,7 +17,12 @@ export class UserService {
     }
 
     register(user: User) {
-        return this.http.post('/users/register', user);
+        let data: any = {};
+        data.username = user.username;
+        data.password = user.password;
+        data.nickName = user.nickName;
+        
+        return this.http.post('http://localhost:8080/kuibu-restful/user/register', user);
     }
 
     update(user: User) {
