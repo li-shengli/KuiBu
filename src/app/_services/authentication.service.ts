@@ -10,7 +10,7 @@ export class AuthenticationService {
         return this.http.post<any>('http://localhost:8080/kuibu-restful/user/login', { username: username, password: password })
             .pipe(map(user => {
                 // login successful if there's a jwt token in the response
-                if (user && user.token) {
+                if (user) {
                     // store user details and jwt token in local storage to keep user logged in between page refreshes
                     localStorage.setItem('currentUser', JSON.stringify(user));
                 }

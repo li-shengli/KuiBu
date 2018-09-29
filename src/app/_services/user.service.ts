@@ -5,6 +5,7 @@ import { User } from '../_models';
 
 @Injectable()
 export class UserService {
+    url_prefix = 'http://localhost:8080/kuibu-restful';
     constructor(private http: HttpClient) { }
 
     getAll() {
@@ -22,7 +23,7 @@ export class UserService {
         data.password = user.password;
         data.nickName = user.nickName;
         
-        return this.http.post('http://localhost:8080/kuibu-restful/user/register', user);
+        return this.http.post(this.url_prefix + '/user/register', user);
     }
 
     update(user: User) {
