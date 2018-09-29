@@ -18,11 +18,6 @@ export class UserService {
     }
 
     register(user: User) {
-        let data: any = {};
-        data.username = user.username;
-        data.password = user.password;
-        data.nickName = user.nickName;
-        
         return this.http.post(this.url_prefix + '/user/register', user);
     }
 

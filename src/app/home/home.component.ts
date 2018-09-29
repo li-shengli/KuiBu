@@ -7,10 +7,7 @@ import { NewTaskComponent } from '../new-task/new-task.component';
     templateUrl: 'home.component.html',
     styleUrls: ['./home.component.css']})
 export class HomeComponent implements OnInit {
-    title = 'KuiBu';
-
-  animal: string;
-  name: string;
+  title = 'KuiBu';
 
   constructor(public dialog: MatDialog) {}
 
@@ -19,15 +16,19 @@ export class HomeComponent implements OnInit {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(NewTaskComponent, {
-      width: '350px',
-      data: {name: this.name, animal: this.animal}
+      width: '350px'
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      this.animal = result;
+      if (result) {
+        console.log('dialog closed, refresh the task list.');
+      } else {
+        console.log('dialog closed, no need to refresh the task list.');
+      }
+      
     });
   }
+
 
   chart = new Chart({
     chart: {
