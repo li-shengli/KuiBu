@@ -1,16 +1,15 @@
 import { Component, OnInit, Inject} from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { AlertService, TaskService } from '../_services';
 
 @Component({
   templateUrl: './new-task.component.html',
-  styleUrls: ['./new-task.component.css']
+  styleUrls: ['./new-task.component.css', '../../assets/css/bootstrap.min.css']
 })
 export class NewTaskComponent implements OnInit {
-  taskType = 'Reading';
   newTaskForm: FormGroup;
   loading = false;
   submitted = false;
@@ -25,6 +24,7 @@ export class NewTaskComponent implements OnInit {
 
   ngOnInit() {
      this.newTaskForm = this.formBuilder.group({
+            taskType: ['0', Validators.required],
             taskName: ['Reading a book', Validators.required],
             expectDays: ['10', Validators.required],
             totalPages: ['500', Validators.required]
@@ -36,7 +36,7 @@ export class NewTaskComponent implements OnInit {
 
   onSubmit() {
         this.submitted = true;
-        console.debug ("New task was submitted, taskName = " + this.f.taskName);
+        console.log ("New task was submitted, taskName = " + this.f.taskName);
 
         // stop here if form is invalid
         if (this.newTaskForm.invalid) {
@@ -44,14 +44,6 @@ export class NewTaskComponent implements OnInit {
         }
 
         this.loading = true;
-        this.taskService.createTask()
-            .subscribe(
-                data => {
-                    console.debug("task created.")
-                },
-                error => {
-                    this.alertService.error(error);
-                    this.loading = false;
-                });
+       
     }
 }

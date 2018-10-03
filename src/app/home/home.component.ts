@@ -1,7 +1,9 @@
-﻿import { Component, OnInit, Inject, ViewChild} from '@angular/core';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material';
-import {Chart} from 'angular-highcharts';
+﻿import { Component, OnInit, Inject, ViewChild } from '@angular/core';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { Chart } from 'angular-highcharts';
 import { NewTaskComponent } from '../new-task/new-task.component';
+
+import { TaskService } from '../_services';
 
 @Component({
     templateUrl: 'home.component.html',
@@ -9,7 +11,9 @@ import { NewTaskComponent } from '../new-task/new-task.component';
 export class HomeComponent implements OnInit {
   title = 'KuiBu';
 
-  constructor(public dialog: MatDialog) {}
+  constructor(
+    public dialog: MatDialog,
+    private taskService: TaskService) {}
 
   ngOnInit() {
   }
@@ -21,11 +25,11 @@ export class HomeComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('dialog closed, refresh the task list.');
+        console.log('Dialog result: '+ `${result.controls.taskType.value}`);
+
       } else {
         console.log('dialog closed, no need to refresh the task list.');
       }
-      
     });
   }
 

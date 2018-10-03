@@ -1,7 +1,0 @@
-export class TaskReadingInfo {
-    taskId: string;
-    pagesIntotal: string;
-    pagesCurrent: string;
-    daysExpected: string;
-    history: string;
-}
