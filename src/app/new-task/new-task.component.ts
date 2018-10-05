@@ -31,19 +31,4 @@ export class NewTaskComponent implements OnInit {
         });
   }
 
-  // convenience getter for easy access to form fields
-  get f() { return this.newTaskForm.controls; }
-
-  onSubmit() {
-        this.submitted = true;
-        console.log ("New task was submitted, taskName = " + this.f.taskName);
-
-        // stop here if form is invalid
-        if (this.newTaskForm.invalid) {
-            return;
-        }
-
-        this.loading = true;
-       
-    }
 }

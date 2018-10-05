@@ -8,7 +8,29 @@
     </span>
     </mat-toolbar>
     <mat-tab-group selectedIndex=1>
-    <mat-tab label="Backlog">Tasks not start yet</mat-tab>
+    <mat-tab label="Backlog">
+        <mat-accordion>
+            <!--ng-template *ngFor="let task of submittedTasks" -->
+            <ng-container *ngFor="let task of submittedTasks">
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title ng-if="task.taskType == 0">
+                            Reading
+                        </mat-panel-title>
+                        <mat-panel-description>
+                            {{task.taskName}}
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <mat-progress-bar mode="determinate" value="40"></mat-progress-bar>
+                    <label>Current Page &nbsp;</label>
+                    <mat-form-field class="input-full-width">
+                        <input matInput value="197" (focus)="value=''">
+                    </mat-form-field>
+                    <div [chart]="chart"></div>
+                </mat-expansion-panel>
+            </ng-container>
+        </mat-accordion>
+    </mat-tab>
     <mat-tab label="TodoList">
         <mat-accordion>
             <mat-expansion-panel>

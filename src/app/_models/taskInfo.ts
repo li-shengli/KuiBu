@@ -1,5 +1,6 @@
 export class TaskInfo {
     taskId: string;
+    username: string;
     taskName: string;
     taskType: number;
     taskStatus: number;

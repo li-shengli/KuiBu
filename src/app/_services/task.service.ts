@@ -11,7 +11,15 @@ export class TaskService {
     constructor(private http: HttpClient) { }
 
     createTask(taskInfo: TaskInfo) {
-        console.debug("create new task!");
-        this.http.post(this.url_prefix + '/task/add', taskInfo);
+        console.log("create new task!");
+        taskInfo.taskType = 0;
+        taskInfo.username = localStorage.getItem('currentUserId');
+        return this.http.post(this.url_prefix + '/task/add', taskInfo);
+    }
+
+    getAllTasks() {
+        console.log("get all tasks.");
+        var username = localStorage.getItem('currentUserId');
+        return this.http.get(this.url_prefix+'/task/all/'+username);
     }
 }
