@@ -62,6 +62,9 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  saveAndStart() {
+    console.log("Update the task and start it");
+  }
 
   chart = new Chart({
     chart: {

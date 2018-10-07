@@ -12,6 +12,6 @@ export class TaskInfo {
 
     pagesIntotal: number;
     pagesCurrent: number;
-    daysExpected: number;
+    expectedDays: number;
     //history: Map<number, number>;
 }
