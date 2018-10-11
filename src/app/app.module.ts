@@ -29,7 +29,7 @@ import { HomeComponent } from './home';
 import { LoginComponent } from './login';
 import { RegisterComponent } from './register';
 // import { fakeBackendProvider } from './_helpers';
-import { ReactiveFormsModule }    from '@angular/forms';
+import { ReactiveFormsModule, FormsModule }    from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ConnectUsComponent } from './connect-us/connect-us.component';
 
@@ -60,6 +60,7 @@ import { ConnectUsComponent } from './connect-us/connect-us.component';
     MatDatepickerModule,
     MatCardModule,
     ChartModule,
+    FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
     routing
