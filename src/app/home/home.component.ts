@@ -6,6 +6,8 @@ import { NewTaskComponent } from '../new-task/new-task.component';
 import { first } from 'rxjs/operators';
 import { TaskInfo } from '../_models';
 
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
 import { TaskService, AlertService } from '../_services';
 
 @Component({
@@ -13,6 +15,7 @@ import { TaskService, AlertService } from '../_services';
     styleUrls: ['./home.component.css']})
 export class HomeComponent implements OnInit {
   title = 'KuiBu';
+  submitTaskForms: FormGroup[] = [];
   submittedTasks: TaskInfo[] = [];
   ongoingTasks: TaskInfo[] = [];
   doneTasks: TaskInfo[] = [];
@@ -21,6 +24,7 @@ export class HomeComponent implements OnInit {
     public dialog: MatDialog,
     private taskService: TaskService,
     private router: Router,
+    private formBuilder: FormBuilder,
     private alertService: AlertService) {}
 
   ngOnInit() {
@@ -30,6 +34,17 @@ export class HomeComponent implements OnInit {
           this.submittedTasks = data["0"];
           this.ongoingTasks = data["1"];
           this.doneTasks = data["2"];
+
+          for (let i = 0; i < this.submittedTasks.length; i++) {
+            console.log('task name: '+ `this.submittedTasks[i].taskId` +', task total page: '+ `this.submittedTasks[i].pagesIntotal`);
+
+            this.submitTaskForms[i] = this.formBuilder.group({
+              taskId: [this.submittedTasks[i].taskId, Validators.required],
+              taskName: [this.submittedTasks[i].taskName, Validators.required],
+              pagesIntotal: [this.submittedTasks[i].pagesIntotal, Validators.required],
+              expectedDays: [this.submittedTasks[i].expectedDays, Validators.required]
+            });
+          }
       },
       error => {
           // this.router.navigate([this.returnUrl]);
@@ -51,7 +66,7 @@ export class HomeComponent implements OnInit {
               this.router.navigate(['/home']);
           },
           error => {
-            console.log('something is wrong: '+ error);
+            console.log('something is wrong: '+ error.message);
               // this.router.navigate([this.returnUrl]);
               this.alertService.error(error);
               //this.loading = false;
@@ -62,8 +77,8 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  saveAndStart() {
-    console.log("Update the task and start it");
+  saveAndStart(task: FormGroup) {
+    console.log("Update the task and start it: " + task.value.taskName);
   }
 
   chart = new Chart({

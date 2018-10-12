@@ -14,4 +14,8 @@ export class TaskInfo {
     pagesCurrent: number;
     expectedDays: number;
     //history: Map<number, number>;
+
+    toString(){
+        return this.taskId + this.taskName + this.taskType;
+    }
 }

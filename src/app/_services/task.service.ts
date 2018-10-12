@@ -11,8 +11,7 @@ export class TaskService {
     constructor(private http: HttpClient) { }
 
     createTask(taskInfo: TaskInfo) {
-        console.log("create new task!");
-        taskInfo.taskType = 0;
+        console.log("create new task! taskInfo.pageIntotal = " + taskInfo.pagesIntotal);
         taskInfo.username = localStorage.getItem('currentUserId');
         return this.http.post(this.url_prefix + '/task/add', taskInfo);
     }
