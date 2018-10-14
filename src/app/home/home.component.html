@@ -19,6 +19,7 @@
                             Reading
                         </mat-panel-title>
                         <mat-panel-description>
+                            <input hidden formControlName="taskId">
                             <input matInput formControlName="taskName">
                         </mat-panel-description>
                     </mat-expansion-panel-header>
@@ -30,7 +31,8 @@
                             <input matInput formControlName="expectedDays" placeholder="Expected Days">
                         </mat-form-field>
                         <div class="button-row">
-                            <button mat-raised-button (click)="saveAndStart(task)">Update Only</button>
+                            <button mat-raised-button (click)="delete(task)">Delete</button>
+                            <button mat-raised-button (click)="update(task)">Update Only</button>
                             <button mat-raised-button (click)="saveAndStart(task)">Save And Start</button>
                         </div>
                     </div>
@@ -42,33 +44,29 @@
     </mat-tab>
     <mat-tab label="TodoList">
         <mat-accordion>
-            <mat-expansion-panel>
-            <mat-expansion-panel-header>
-                <mat-panel-title>
-                Reading
-                </mat-panel-title>
-                <mat-panel-description>
-                The Lord of Ring
-                </mat-panel-description>
-            </mat-expansion-panel-header>
-            <mat-progress-bar mode="determinate" value="40"></mat-progress-bar>
-            <label>Current Page &nbsp;</label>
-            <mat-form-field class="input-full-width">
-                <input matInput value="197" (focus)="value=''">
-            </mat-form-field>
-            <div [chart]="chart"></div>
-            </mat-expansion-panel>
-            <mat-expansion-panel>
-            <mat-expansion-panel-header>
-                <mat-panel-title>
-                Reading
-                </mat-panel-title>
-                <mat-panel-description>
-                Understand JVM
-                </mat-panel-description>
-            </mat-expansion-panel-header>
-            <mat-progress-bar mode="determinate" value="70"></mat-progress-bar>
-            </mat-expansion-panel>
+            <div *ngFor="let task of ongoingTaskForms">
+            <form [formGroup]="task" >
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                        Reading
+                        </mat-panel-title>
+                        <mat-panel-description>
+                            <input hidden formControlName="taskId">
+                            <input matInput formControlName="taskName">
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <mat-progress-bar mode="determinate" value="40"></mat-progress-bar>
+                    <mat-form-field class="input-full-width">
+                        <input matInput formControlName="pagesCurrent" placeholder="Current Page">
+                    </mat-form-field>
+                    <mat-form-field class="input-full-width">
+                        <input matInput formControlName="pagesIntotal" placeholder="Total Pages">
+                    </mat-form-field>
+                    <div [chart]="chart"></div>
+                </mat-expansion-panel>
+            </form>
+            </div>
         </mat-accordion>
     </mat-tab>
     <mat-tab label="Achievement">Tasks have been done</mat-tab>

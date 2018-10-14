@@ -21,4 +21,14 @@ export class TaskService {
         var username = localStorage.getItem('currentUserId');
         return this.http.get(this.url_prefix+'/task/all/'+username);
     }
+
+    updateReadingTask(taskInfo: TaskInfo) {
+        console.log("update a reading task.");
+        return this.http.post(this.url_prefix + '/task/updateReadingTask', taskInfo);
+    }
+
+    deleteReadingTask(taskInfo: TaskInfo) {
+        console.log("update a reading task.");
+        return this.http.get(this.url_prefix + '/task/delete/0/' + taskInfo.taskId);
+    }
 }
