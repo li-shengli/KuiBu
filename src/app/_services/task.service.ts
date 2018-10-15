@@ -29,6 +29,7 @@ export class TaskService {
 
     deleteReadingTask(taskInfo: TaskInfo) {
         console.log("update a reading task.");
-        return this.http.get(this.url_prefix + '/task/delete/0/' + taskInfo.taskId);
+        var username = localStorage.getItem('currentUserId');
+        return this.http.get(this.url_prefix + '/task/delete/'+username+'/0/' + taskInfo.taskId);
     }
 }

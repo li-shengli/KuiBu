@@ -2,7 +2,7 @@ export class TaskInfo {
     taskId: string;
     username: string;
     taskName: string;
-    taskType: number;
+    taskType: string;
     taskStatus: number;
     taskFrom: number;
     priority: number;

@@ -41,19 +41,23 @@ export class HomeComponent implements OnInit {
 
             this.submitTaskForms[i] = this.formBuilder.group({
               taskId: [this.submittedTasks[i].taskId],
+              taskType: [this.submittedTasks[i].taskType],
               taskName: [this.submittedTasks[i].taskName, Validators.required],
-              pagesIntotal: [this.submittedTasks[i].pagesIntotal, Validators.required],
-              expectedDays: [this.submittedTasks[i].expectedDays, Validators.required]
+              pagesIntotal: [this.submittedTasks[i].pagesIntotal, [Validators.required, Validators.pattern('[\d]')]],
+              expectedDays: [this.submittedTasks[i].expectedDays, [Validators.required, Validators.pattern('[\d]')]]
             });
           }
 
           for (let i=0; i<this.ongoingTasks.length; i++) {
             this.ongoingTaskForms[i] = this.formBuilder.group ({
               taskId: [this.ongoingTasks[i].taskId],
+              taskType: [this.ongoingTasks[i].taskType],
               taskName: [this.ongoingTasks[i].taskName, Validators.required],
-              pagesIntotal: [this.ongoingTasks[i].pagesIntotal, Validators.required],
-              pagesCurrent: [this.ongoingTasks[i].pagesCurrent, Validators.required],
-              chart: new Chart({
+              taskStatus: [this.ongoingTasks[i].taskStatus],
+              pagesIntotal: [this.ongoingTasks[i].pagesIntotal, [Validators.required, Validators.pattern('[\d]')]],
+              pagesCurrent: [this.ongoingTasks[i].pagesCurrent, [Validators.required, Validators.pattern('[\d]')]],
+              progress: 100*this.ongoingTasks[i].pagesCurrent/this.ongoingTasks[i].pagesIntotal,
+              chartData: new Chart({
                 chart: {
                   type: 'line'
                 },
@@ -68,8 +72,8 @@ export class HomeComponent implements OnInit {
                   title: {
                     text: 'Pages'
                   },
-                  tickInterval: 50,
-                  ceiling: 580,
+                  tickInterval: this.submittedTasks[i].pagesIntotal/20,
+                  ceiling: this.submittedTasks[i].pagesIntotal,
                   
                 },
                 plotOptions: {
@@ -111,6 +115,7 @@ export class HomeComponent implements OnInit {
 
   update(task: FormGroup) {
     console.log("Update the task: " + task.value.taskName);
+    task.value.chartData = null;
     this.taskService.updateReadingTask(task.value).subscribe(
       data => {
           console.log('everything goes well. go to home page.')
