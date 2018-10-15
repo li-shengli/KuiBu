@@ -49,6 +49,12 @@ export class HomeComponent implements OnInit {
           }
 
           for (let i=0; i<this.ongoingTasks.length; i++) {
+            this.ongoingTasks[i].history.set(0,0);
+            this.ongoingTasks[i].history.set(1,24);
+            this.ongoingTasks[i].history.set(2,39);
+            this.ongoingTasks[i].history.set(5,89);
+            this.ongoingTasks[i].history.set(7,111);
+            this.ongoingTasks[i].history.set(9,178);
             this.ongoingTaskForms[i] = this.formBuilder.group ({
               taskId: [this.ongoingTasks[i].taskId],
               taskType: [this.ongoingTasks[i].taskType],
@@ -72,8 +78,8 @@ export class HomeComponent implements OnInit {
                   title: {
                     text: 'Pages'
                   },
-                  tickInterval: this.submittedTasks[i].pagesIntotal/20,
-                  ceiling: this.submittedTasks[i].pagesIntotal,
+                  tickInterval: this.ongoingTasks[i].pagesIntotal/20,
+                  ceiling: this.ongoingTasks[i].pagesIntotal,
                   
                 },
                 plotOptions: {
@@ -86,7 +92,7 @@ export class HomeComponent implements OnInit {
                 series: [
                   {
                     name: 'Days',
-                    data: [[0, 0], [2, 21], [5, 32], [7, 39], [8, 47], [11, 75]]
+                    data: Array.from(this.ongoingTasks[i].history.values())
                   }
                 ]
               })
