@@ -49,12 +49,8 @@ export class HomeComponent implements OnInit {
           }
 
           for (let i=0; i<this.ongoingTasks.length; i++) {
-            this.ongoingTasks[i].history.set(0,0);
-            this.ongoingTasks[i].history.set(1,24);
-            this.ongoingTasks[i].history.set(2,39);
-            this.ongoingTasks[i].history.set(5,89);
-            this.ongoingTasks[i].history.set(7,111);
-            this.ongoingTasks[i].history.set(9,178);
+            console.log("Show task : " + this.ongoingTasks[i].taskName);
+
             this.ongoingTaskForms[i] = this.formBuilder.group ({
               taskId: [this.ongoingTasks[i].taskId],
               taskType: [this.ongoingTasks[i].taskType],
@@ -78,7 +74,7 @@ export class HomeComponent implements OnInit {
                   title: {
                     text: 'Pages'
                   },
-                  tickInterval: this.ongoingTasks[i].pagesIntotal/20,
+                  tickInterval: this.ongoingTasks[i].pagesIntotal/10,
                   ceiling: this.ongoingTasks[i].pagesIntotal,
                   
                 },
@@ -92,7 +88,7 @@ export class HomeComponent implements OnInit {
                 series: [
                   {
                     name: 'Days',
-                    data: Array.from(this.ongoingTasks[i].history.values())
+                    data: this.arrayConvert(this.ongoingTasks[i].history)
                   }
                 ]
               })
@@ -103,6 +99,15 @@ export class HomeComponent implements OnInit {
           // this.router.navigate([this.returnUrl]);
           this.alertService.error(error.message);
       });
+  }
+
+  arrayConvert(history: Map<number, number>) {
+    var historyArray = [];
+    for (const[key, value] of Object.entries(history)) {
+      historyArray.push([key, value]);
+    }
+
+    return historyArray;
   }
 
   saveAndStart(task: FormGroup) {
