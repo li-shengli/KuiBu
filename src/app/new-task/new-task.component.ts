@@ -6,6 +6,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { AlertService, TaskService } from '../_services';
 
 @Component({
+  selector: 'new-task.component',
   templateUrl: './new-task.component.html',
   styleUrls: ['./new-task.component.css', '../../assets/css/bootstrap.min.css']
 })

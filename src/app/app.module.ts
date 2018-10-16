@@ -70,7 +70,7 @@ import { ConnectUsComponent } from './connect-us/connect-us.component';
     ConnectUsComponent
   ],
   providers: [
-    {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}},
+    {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: true}},
     AuthGuard,
     AlertService,
     AuthenticationService,
