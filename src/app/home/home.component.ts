@@ -98,7 +98,6 @@ export class HomeComponent implements OnInit {
           }
       },
       error => {
-          // this.router.navigate([this.returnUrl]);
           this.alertService.error(error.message);
       });
   }
@@ -108,14 +107,20 @@ export class HomeComponent implements OnInit {
     return historyArray;
   }
 
+  reloadCurrentPage() {
+    this.ngOnInit();
+    this.router.onSameUrlNavigation = 'reload';
+    this.router.navigate(['']);
+  }
+
   saveAndStart(task: FormGroup) {
     console.log("Update the task and start it: " + task.value.taskName);
     task.value.taskStatus = "Executing";
+    task.value.startTime = new Date();
     this.taskService.updateReadingTask(task.value).subscribe(
       data => {
-          console.log('everything goes well. go to home page.')
-          this.router.navigate(['/home']);
-          this.ngOnInit();
+          this.reloadCurrentPage();
+          console.log('everything goes well. go to home page');
       },
       error => {
         console.log('something is wrong: '+ error.message);
@@ -128,9 +133,8 @@ export class HomeComponent implements OnInit {
     task.value.chartData = null;
     this.taskService.updateReadingTask(task.value).subscribe(
       data => {
+          this.reloadCurrentPage();
           console.log('everything goes well. go to home page.')
-          this.router.navigate(['/home']);
-          this.ngOnInit();
       },
       error => {
         console.log('something is wrong: '+ error.message);
@@ -139,12 +143,11 @@ export class HomeComponent implements OnInit {
   }
 
   delete(task: FormGroup) {
-    console.log("Update the task: " + task.value.taskName);
+    console.log("Delete the task: " + task.value.taskName);
     this.taskService.deleteReadingTask(task.value).subscribe(
       data => {
+          this.reloadCurrentPage();
           console.log('everything goes well. go to home page.')
-          this.router.navigate(['/home']);
-          this.ngOnInit();
       },
       error => {
         console.log('something is wrong: '+ error.message);
@@ -162,9 +165,8 @@ export class HomeComponent implements OnInit {
         console.log('Dialog result: '+ `${result.value}`);
         this.taskService.createTask(result.value).subscribe(
           data => {
+              this.reloadCurrentPage();
               console.log('everything goes well. go to home page.')
-              this.router.navigate(['/home']);
-              this.ngOnInit();
           },
           error => {
             console.log('something is wrong: '+ error.message);

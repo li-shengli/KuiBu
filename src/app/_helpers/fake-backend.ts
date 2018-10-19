@@ -87,8 +87,14 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                     matchedTask.taskStatus = task.taskStatus;
                     matchedTask.pagesCurrent = task.pagesCurrent;
 
-                    var d: number = (Date.now() - Date.parse(matchedTask.createTime.toString()))/(24*60*60*1000);
-                    console.log ("How many days passed: "+parseInt(d.toString()));
+                    if (matchedTask.startTime == null) {
+                        matchedTask.startTime = task.startTime;
+                    } 
+                    var d: number = 0;
+                    if (matchedTask.startTime != null) {
+                        d = (Date.now() - Date.parse(matchedTask.startTime.toString()))/(24*60*60*1000);
+                        console.log ("How many days passed: "+parseInt(d.toString()));
+                    }
                     var currentPage: number = 0;
                     if (task.pagesCurrent != null) {
                         currentPage = task.pagesCurrent;
@@ -124,6 +130,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                         break;
                     }
                 }
+
+                console.log ("Task Deleted: " + id);
                 // respond 200 OK
                 return of(new HttpResponse({ status: 200 }));
             }
@@ -183,7 +191,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             }
 
             // register user
-            if (request.url.endsWith('/users/register') && request.method === 'POST') {
+            if (request.url.endsWith('/user/register') && request.method === 'POST') {
+                console.log ("register user into localStorage...");
                 // get new user object from post body
                 let newUser = request.body;
 
@@ -194,7 +203,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 }
 
                 // save new user
-                newUser.id = users.length + 1 +'';
+                newUser.id = Date.now();
                 users.push(newUser);
                 localStorage.setItem('users', JSON.stringify(users));
 

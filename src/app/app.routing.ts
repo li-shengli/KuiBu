@@ -7,13 +7,13 @@ import { AuthGuard } from './_guards';
 import { NewTaskComponent } from './new-task/new-task.component';
 
 const appRoutes: Routes = [
-    { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
+    { path: '', component: HomeComponent, canActivate: [AuthGuard] },
     { path: 'login', component: LoginComponent },
     { path: 'register', component: RegisterComponent },
     { path: 'new_task', component: NewTaskComponent , canActivate: [AuthGuard] },
 
     // otherwise redirect to home
-    { path: '**', redirectTo: 'login' }
+    { path: '**', redirectTo: '' }
 ];
 
 export const routing = RouterModule.forRoot(appRoutes);
