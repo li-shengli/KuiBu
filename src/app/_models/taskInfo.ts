@@ -3,10 +3,11 @@ export class TaskInfo {
     username: string;
     taskName: string;
     taskType: string;
-    taskStatus: number;
+    taskStatus: string;
     taskFrom: number;
     priority: number;
-    startDate: Date;
+    createTime: Date;
+    startTime: Date;
     endDate: Date;
     lastUpdateDate: Date;
 

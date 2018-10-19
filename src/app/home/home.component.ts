@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { NewTaskComponent } from '../new-task/new-task.component';
 import { first } from 'rxjs/operators';
 import { TaskInfo } from '../_models';
+import { MapArrayConverter } from '../_helpers/MapArrayConverter';
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -31,18 +32,19 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
     this.taskService.getAllTasks().subscribe(
       data => {
-          console.log("retrieve tasks...");
-          this.submittedTasks = data["0"];
-          this.ongoingTasks = data["1"];
-          this.doneTasks = data["2"];
+          console.log("retrieve tasks..." + JSON.stringify(data));
+          this.submittedTasks = data["Submitted"];
+          this.ongoingTasks = data["Executing"];
+          this.doneTasks = data["Finished"];
 
           for (let i = 0; i < this.submittedTasks.length; i++) {
-            console.log('task name: '+ this.submittedTasks[i].taskName);
+            console.log('task history 3: '+ Array.from(this.submittedTasks[i].history));
 
             this.submitTaskForms[i] = this.formBuilder.group({
               taskId: [this.submittedTasks[i].taskId],
               taskType: [this.submittedTasks[i].taskType],
               taskName: [this.submittedTasks[i].taskName, Validators.required],
+              pagesCurrent: [this.submittedTasks[i].pagesCurrent, [Validators.required, Validators.pattern('[\d]')]],
               pagesIntotal: [this.submittedTasks[i].pagesIntotal, [Validators.required, Validators.pattern('[\d]')]],
               expectedDays: [this.submittedTasks[i].expectedDays, [Validators.required, Validators.pattern('[\d]')]]
             });
@@ -102,25 +104,22 @@ export class HomeComponent implements OnInit {
   }
 
   arrayConvert(history: Map<number, number>) {
-    var historyArray = [];
-    for (const[key, value] of Object.entries(history)) {
-      historyArray.push([key, value]);
-    }
-
+    var historyArray = MapArrayConverter.toArray(history);
     return historyArray;
   }
 
   saveAndStart(task: FormGroup) {
     console.log("Update the task and start it: " + task.value.taskName);
-    task.value.taskStatus = 1;
+    task.value.taskStatus = "Executing";
     this.taskService.updateReadingTask(task.value).subscribe(
       data => {
           console.log('everything goes well. go to home page.')
           this.router.navigate(['/home']);
+          this.ngOnInit();
       },
       error => {
         console.log('something is wrong: '+ error.message);
-        this.alertService.error(error);
+        this.alertService.error(error.message);
       });
   }
 
@@ -131,6 +130,7 @@ export class HomeComponent implements OnInit {
       data => {
           console.log('everything goes well. go to home page.')
           this.router.navigate(['/home']);
+          this.ngOnInit();
       },
       error => {
         console.log('something is wrong: '+ error.message);
@@ -144,6 +144,7 @@ export class HomeComponent implements OnInit {
       data => {
           console.log('everything goes well. go to home page.')
           this.router.navigate(['/home']);
+          this.ngOnInit();
       },
       error => {
         console.log('something is wrong: '+ error.message);
@@ -163,6 +164,7 @@ export class HomeComponent implements OnInit {
           data => {
               console.log('everything goes well. go to home page.')
               this.router.navigate(['/home']);
+              this.ngOnInit();
           },
           error => {
             console.log('something is wrong: '+ error.message);

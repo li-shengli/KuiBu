@@ -28,6 +28,7 @@ export class NewTaskComponent implements OnInit {
             taskType: ["Reading", Validators.required],
             taskName: ["Reading a book", Validators.required],
             expectedDays: [10, Validators.required],
+            pagesCurrent: [0, Validators.required],
             pagesIntotal: [500, Validators.required]
         });
   }

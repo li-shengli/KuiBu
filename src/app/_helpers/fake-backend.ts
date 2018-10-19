@@ -2,6 +2,8 @@
 import { HttpRequest, HttpResponse, HttpHandler, HttpEvent, HttpInterceptor, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Observable, of, throwError } from 'rxjs';
 import { delay, mergeMap, materialize, dematerialize } from 'rxjs/operators';
+import { TaskInfo, User } from '../_models';
+import { MapArrayConverter } from './MapArrayConverter';
 
 @Injectable()
 export class FakeBackendInterceptor implements HttpInterceptor {
@@ -10,13 +12,124 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         // array in local storage for registered users
-        let users: any[] = JSON.parse(localStorage.getItem('users')) || [];
+        let users: User[] = JSON.parse(localStorage.getItem('users')) || [];
+        let tasks: TaskInfo[] = JSON.parse(localStorage.getItem('tasks')) || [];
 
         // wrap in delayed observable to simulate server api call
         return of(null).pipe(mergeMap(() => {
+           
+            // add task
+            if (request.url.endsWith('/task/add') && request.method === 'POST') {
+                let newTask = request.body;
+
+                // save new task
+                newTask.taskId = Date.now();
+                newTask.createTime = new Date();
+                newTask.taskStatus = "Submitted";
+                newTask.history = new Map();
+                newTask.history.set(0, newTask.pagesCurrent);
+                tasks.push(newTask);
+                localStorage.setItem('tasks', JSON.stringify(tasks));
+                
+                localStorage.setItem(newTask.taskId, JSON.stringify(MapArrayConverter.toArray(newTask.history)));
+                console.log ("taskHistory: " + JSON.stringify(MapArrayConverter.toArray(newTask.history)));
+
+                // respond 200 OK
+                return of(new HttpResponse({ status: 200 }));
+            }
+
+            // get all task by username
+            if (request.url.match(/\/task\/all\/\w+$/) && request.method === 'GET') {
+                console.log ("retrive tasks from localStorage...");
+
+                let submittedTasks: TaskInfo[] = [];
+                let ongoingTasks: TaskInfo[] = [];
+                let doneTasks: TaskInfo[] = [];
+                
+                tasks.forEach(task => {
+                    console.log ("retrive Submitted tasks from localStorage... and oldHistory ");
+
+                    task.history = this.getTaskHistory(task.taskId);
+
+                    if (task.taskStatus === "Submitted") {
+                        submittedTasks.push(task);
+                    } else if  (task.taskStatus === "Executing") {
+                        console.log ("retrive Executing tasks from localStorage...");
+                        ongoingTasks.push(task);
+                    } else {
+                        console.log ("retrive Finished tasks from localStorage...");
+                        doneTasks.push(task);
+                    }
+                });
+
+                let allTasks = {
+                    "Submitted": submittedTasks,
+                    "Executing": ongoingTasks,
+                    "Finished": doneTasks
+                }
+
+                console.log ("retrive all tasks from localStorage: " + allTasks);
+
+                return of(new HttpResponse({ status: 200, body: allTasks }));
+            }
+
+            // update task
+            if (request.url.endsWith('/task/updateReadingTask') && request.method === 'POST') {
+                let task = request.body;
+
+                console.log ("update tasks from localStorage..." + JSON.stringify(task));
+
+                let matchedTasks = tasks.filter(existTask => { return existTask.taskId == task.taskId; });
+                let matchedTask = matchedTasks.length ? matchedTasks[0] : null;
+                if (matchedTask != null) {
+                    console.log ("One task was found from localStorage..." + JSON.stringify(matchedTask));
+
+                    matchedTask.taskStatus = task.taskStatus;
+                    matchedTask.pagesCurrent = task.pagesCurrent;
+
+                    var d: number = (Date.now() - Date.parse(matchedTask.createTime.toString()))/(24*60*60*1000);
+                    console.log ("How many days passed: "+parseInt(d.toString()));
+                    var currentPage: number = 0;
+                    if (task.pagesCurrent != null) {
+                        currentPage = task.pagesCurrent;
+                    }
+                    console.log ("How many pages done: "+currentPage);
+
+                    var taskHistory = this.getTaskHistory(matchedTask.taskId);
+                    taskHistory.set(parseInt(d.toString()), currentPage);
+                    localStorage.setItem(matchedTask.taskId, JSON.stringify(Array.from(taskHistory)));
+                    console.log ("The updated task " + JSON.stringify(matchedTask));
+
+                    localStorage.setItem('tasks', JSON.stringify(tasks));
+
+                    return of(new HttpResponse({ status: 200 }));
+                } else {
+                    console.log ("No task was found from localStorage...");
+                    return throwError({ error: { message: 'No Task Found!' } });
+                }
+                
+            }
+
+            // delete task
+            if (request.url.match(/\/task\/delete\/\w+\/0\/\d+$/) && request.method === 'GET') {
+                
+                let urlParts = request.url.split('/');
+                let id = urlParts[urlParts.length - 1];
+                for (let i = 0; i < tasks.length; i++) {
+                    let task = tasks[i];
+                    if (task.taskId == id) {
+                        // delete tasks
+                        tasks.splice(i, 1);
+                        localStorage.setItem('tasks', JSON.stringify(tasks));
+                        break;
+                    }
+                }
+                // respond 200 OK
+                return of(new HttpResponse({ status: 200 }));
+            }
 
             // authenticate
-            if (request.url.endsWith('/users/authenticate') && request.method === 'POST') {
+            if (request.url.endsWith('/user/login') && request.method === 'POST') {
                 // find if any user matches login credentials
                 let filteredUsers = users.filter(user => {
                     return user.username === request.body.username && user.password === request.body.password;
@@ -28,10 +141,11 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                     let body = {
                         id: user.id,
                         username: user.username,
-                        firstName: user.firstName,
-                        lastName: user.lastName,
-                        token: 'fake-jwt-token'
+                        nickName: user.nickName
                     };
+
+                    localStorage.setItem('currentUser', JSON.stringify(user));
+                    localStorage.setItem('currentUserId', user.username);
 
                     return of(new HttpResponse({ status: 200, body: body }));
                 } else {
@@ -52,12 +166,12 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             }
 
             // get user by id
-            if (request.url.match(/\/users\/\d+$/) && request.method === 'GET') {
+            if (request.url.match(/.*\/users\/\d+$/) && request.method === 'GET') {
                 // check for fake auth token in header and return user if valid, this security is implemented server side in a real application
                 if (request.headers.get('Authorization') === 'Bearer fake-jwt-token') {
                     // find user by id in users array
                     let urlParts = request.url.split('/');
-                    let id = parseInt(urlParts[urlParts.length - 1]);
+                    let id = urlParts[urlParts.length - 1];
                     let matchedUsers = users.filter(user => { return user.id === id; });
                     let user = matchedUsers.length ? matchedUsers[0] : null;
 
@@ -80,7 +194,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 }
 
                 // save new user
-                newUser.id = users.length + 1;
+                newUser.id = users.length + 1 +'';
                 users.push(newUser);
                 localStorage.setItem('users', JSON.stringify(users));
 
@@ -94,7 +208,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 if (request.headers.get('Authorization') === 'Bearer fake-jwt-token') {
                     // find user by id in users array
                     let urlParts = request.url.split('/');
-                    let id = parseInt(urlParts[urlParts.length - 1]);
+                    let id = urlParts[urlParts.length - 1];
                     for (let i = 0; i < users.length; i++) {
                         let user = users[i];
                         if (user.id === id) {
@@ -122,6 +236,15 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         .pipe(materialize())
         .pipe(delay(500))
         .pipe(dematerialize());
+    }
+
+    getTaskHistory(taskId: string) {
+        console.log("Get History for task: " + taskId);
+        var oldHistory = localStorage.getItem(taskId);
+        var history = MapArrayConverter.toMap(JSON.parse(oldHistory));
+
+        console.log("Task History: " + history);
+        return history;
     }
 }
 
