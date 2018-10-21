@@ -92,6 +92,9 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                     } 
                     var d: number = 0;
                     if (matchedTask.startTime != null) {
+                        console.log(Date.now());
+                        console.log(Date.parse(matchedTask.startTime.toString()));
+                        console.log(24*60*60*1000);
                         d = (Date.now() - Date.parse(matchedTask.startTime.toString()))/(24*60*60*1000);
                         console.log ("How many days passed: "+parseInt(d.toString()));
                     }

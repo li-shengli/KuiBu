@@ -1,12 +1,12 @@
 ﻿import { Component, OnInit, Inject, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatIconRegistry } from '@angular/material';
 import { Chart } from 'angular-highcharts';
 import { Router } from '@angular/router';
 import { NewTaskComponent } from '../new-task/new-task.component';
 import { first } from 'rxjs/operators';
 import { TaskInfo } from '../_models';
 import { MapArrayConverter } from '../_helpers/MapArrayConverter';
-
+import { DomSanitizer } from '@angular/platform-browser';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { TaskService, AlertService } from '../_services';
@@ -27,7 +27,13 @@ export class HomeComponent implements OnInit {
     private taskService: TaskService,
     private router: Router,
     private formBuilder: FormBuilder,
-    private alertService: AlertService) {}
+    private alertService: AlertService,
+    iconRegistry: MatIconRegistry,
+    sanitizer: DomSanitizer) {
+      iconRegistry.addSvgIcon(
+        'close',
+        sanitizer.bypassSecurityTrustResourceUrl('../../assets/img/close.svg'));
+    }
 
   ngOnInit() {
     this.taskService.getAllTasks().subscribe(

@@ -67,6 +67,9 @@
                         <input hidden type="number" formControlName="taskStatus">
                         <mat-form-field class="input-full-width">
                             <input matInput type="number" formControlName="pagesCurrent" placeholder="Current Page">
+                            <button mat-button *ngIf="task.value.pagesCurrent" matSuffix mat-icon-button aria-label="Clear" (click)="task.value.pagesCurrent=''">
+                                <mat-icon svgIcon="close"></mat-icon>
+                            </button>
                         </mat-form-field>
                         <mat-form-field class="input-full-width">
                             <input matInput type="number" formControlName="pagesIntotal" placeholder="Total Pages">
