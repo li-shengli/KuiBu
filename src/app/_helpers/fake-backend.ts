@@ -90,6 +90,9 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                     if (matchedTask.startTime == null) {
                         matchedTask.startTime = task.startTime;
                     } 
+                    if (matchedTask.startTime == null && matchedTask.taskStatus == "Executing") {
+                        matchedTask.startTime = matchedTask.createTime;
+                    }
                     var d: number = 0;
                     if (matchedTask.startTime != null) {
                         console.log(Date.now());

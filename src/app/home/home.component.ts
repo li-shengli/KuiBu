@@ -31,7 +31,7 @@ export class HomeComponent implements OnInit {
     iconRegistry: MatIconRegistry,
     sanitizer: DomSanitizer) {
       iconRegistry.addSvgIcon(
-        'close',
+        'clear',
         sanitizer.bypassSecurityTrustResourceUrl('../../assets/img/close.svg'));
     }
 
