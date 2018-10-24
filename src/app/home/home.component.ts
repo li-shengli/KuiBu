@@ -1,5 +1,5 @@
 ﻿import { Component, OnInit, Inject, ViewChild } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatIconRegistry } from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, MatIconRegistry, MatIconModule, MatSelectChange } from '@angular/material';
 import { Chart } from 'angular-highcharts';
 import { Router } from '@angular/router';
 import { NewTaskComponent } from '../new-task/new-task.component';
@@ -9,6 +9,7 @@ import { MapArrayConverter } from '../_helpers/MapArrayConverter';
 import { DomSanitizer } from '@angular/platform-browser';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
+import { MatOptionSelectionChange } from '@angular/material/core'
 import { TaskService, AlertService } from '../_services';
 
 @Component({
@@ -80,7 +81,7 @@ export class HomeComponent implements OnInit {
                 yAxis: {
                   gridLineWidth: 1,
                   title: {
-                    text: 'Pages'
+                    text: ''
                   },
                   tickInterval: this.ongoingTasks[i].pagesIntotal/10,
                   ceiling: this.ongoingTasks[i].pagesIntotal,
@@ -182,5 +183,12 @@ export class HomeComponent implements OnInit {
         console.log('dialog closed, no need to refresh the task list.');
       }
     });
+  }
+
+  pageChange(changed: MatSelectChange, taskIndex: number) {
+    console.log('pagesCurrent changed: ' + changed.value);
+    console.log('Task index: ' + taskIndex);
+    console.log('Task Id: ' + this.ongoingTaskForms[taskIndex].value.series);
+    this.ongoingTaskForms[taskIndex].value.chartData.addPoint([10,100]);
   }
 }
