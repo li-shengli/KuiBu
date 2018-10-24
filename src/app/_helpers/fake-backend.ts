@@ -95,9 +95,6 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                     }
                     var d: number = 0;
                     if (matchedTask.startTime != null) {
-                        console.log(Date.now());
-                        console.log(Date.parse(matchedTask.startTime.toString()));
-                        console.log(24*60*60*1000);
                         d = (Date.now() - Date.parse(matchedTask.startTime.toString()))/(24*60*60*1000);
                         console.log ("How many days passed: "+parseInt(d.toString()));
                     }
@@ -109,7 +106,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
                     var taskHistory = this.getTaskHistory(matchedTask.taskId);
                     taskHistory.set(parseInt(d.toString()), currentPage);
-                    localStorage.setItem(matchedTask.taskId, JSON.stringify(Array.from(taskHistory)));
+                    localStorage.setItem(matchedTask.taskId, JSON.stringify(MapArrayConverter.toArray(taskHistory)));
                     console.log ("The updated task " + JSON.stringify(matchedTask));
 
                     localStorage.setItem('tasks', JSON.stringify(tasks));
@@ -133,6 +130,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                         // delete tasks
                         tasks.splice(i, 1);
                         localStorage.setItem('tasks', JSON.stringify(tasks));
+                        localStorage.removeItem(id);
                         break;
                     }
                 }

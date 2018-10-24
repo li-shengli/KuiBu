@@ -65,8 +65,8 @@ export class HomeComponent implements OnInit {
               taskType: [this.ongoingTasks[i].taskType],
               taskName: [this.ongoingTasks[i].taskName, Validators.required],
               taskStatus: [this.ongoingTasks[i].taskStatus],
-              pagesIntotal: [this.ongoingTasks[i].pagesIntotal, [Validators.required, Validators.pattern('[\d]')]],
-              pagesCurrent: [this.ongoingTasks[i].pagesCurrent, [Validators.required, Validators.pattern('[\d]')]],
+              pagesIntotal: [this.ongoingTasks[i].pagesIntotal],
+              pagesCurrent: [this.ongoingTasks[i].pagesCurrent],
               progress: 100*this.ongoingTasks[i].pagesCurrent/this.ongoingTasks[i].pagesIntotal,
               chartData: new Chart({
                 chart: {
@@ -187,8 +187,32 @@ export class HomeComponent implements OnInit {
 
   pageChange(changed: MatSelectChange, taskIndex: number) {
     console.log('pagesCurrent changed: ' + changed.value);
-    console.log('Task index: ' + taskIndex);
-    console.log('Task Id: ' + this.ongoingTaskForms[taskIndex].value.series);
-    this.ongoingTaskForms[taskIndex].value.chartData.addPoint([10,100]);
+    console.log('Task Id: ' + this.ongoingTasks[taskIndex].taskId);
+
+    console.log('type of startTime: ' + typeof(this.ongoingTasks[taskIndex].startTime));
+
+    if (this.ongoingTasks[taskIndex].startTime == null) {
+        this.ongoingTasks[taskIndex].startTime = this.ongoingTasks[taskIndex].createTime;
+    }
+    var d: number = (Date.now() - Date.parse(this.ongoingTasks[taskIndex].startTime.toString()))/(24*60*60*1000);
+    this.ongoingTasks[taskIndex].history.set(parseInt(d.toString()), changed.value);
+    this.ongoingTasks[taskIndex].pagesCurrent = changed.value;
+    this.taskService.updateReadingTask(this.ongoingTasks[taskIndex]).subscribe(
+        data => {
+            console.log('Update reading task goes well. stay in current page.')
+        },
+        error => {
+            console.log('something is wrong: '+ error.message);
+            this.alertService.error(error.message);
+        }
+    );
+    
+    this.ongoingTaskForms[taskIndex].value.chartData.removeSerie(0);
+    this.ongoingTaskForms[taskIndex].value.chartData.addSerie({
+            name: 'Days',
+            data: this.arrayConvert(this.ongoingTasks[taskIndex].history)
+        });
+
+    
   }
 }
