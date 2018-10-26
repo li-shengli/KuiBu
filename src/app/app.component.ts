@@ -4,7 +4,8 @@ import { ConnectUsComponent } from './connect-us/connect-us.component';
 
 @Component({
     selector: 'app',
-    templateUrl: 'app.component.html'
+    templateUrl: 'app.component.html',
+    styleUrls: ['app.component.css']
 })
 
 export class AppComponent implements OnInit {
@@ -20,5 +21,5 @@ export class AppComponent implements OnInit {
         dialogRef.afterClosed().subscribe(result => {
             console.log(`Dialog result: ${result}`);
         });
-  }
+    }
 }

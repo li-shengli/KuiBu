@@ -12,6 +12,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatOptionSelectionChange } from '@angular/material/core'
 import { TaskService, AlertService } from '../_services';
 
+import { ConnectUsComponent } from '../connect-us/connect-us.component';
+
+import {MatSidenav} from '@angular/material/sidenav';
+
 @Component({
     templateUrl: 'home.component.html',
     styleUrls: ['./home.component.css']})
@@ -22,6 +26,7 @@ export class HomeComponent implements OnInit {
   submittedTasks: TaskInfo[] = [];
   ongoingTasks: TaskInfo[] = [];
   doneTasks: TaskInfo[] = [];
+  @ViewChild('sidenav') sidenav: MatSidenav;
 
   constructor(
     public dialog: MatDialog,
@@ -30,7 +35,8 @@ export class HomeComponent implements OnInit {
     private formBuilder: FormBuilder,
     private alertService: AlertService,
     iconRegistry: MatIconRegistry,
-    sanitizer: DomSanitizer) {
+    sanitizer: DomSanitizer
+    ) {
       iconRegistry.addSvgIcon(
         'clear',
         sanitizer.bypassSecurityTrustResourceUrl('../../assets/img/close.svg'));
@@ -108,6 +114,18 @@ export class HomeComponent implements OnInit {
           this.alertService.error(error.message);
       });
   }
+
+  sideNavClose() {
+    this.sidenav.close();
+  }
+
+  connectUs() {
+        const dialogRef = this.dialog.open(ConnectUsComponent);
+
+        dialogRef.afterClosed().subscribe(result => {
+            console.log(`Dialog result: ${result}`);
+        });
+    }
 
   arrayConvert(history: Map<number, number>) {
     var historyArray = MapArrayConverter.toArray(history);

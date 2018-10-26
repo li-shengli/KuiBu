@@ -32,6 +32,7 @@ import { fakeBackendProvider } from './_helpers';
 import { ReactiveFormsModule, FormsModule }    from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ConnectUsComponent } from './connect-us/connect-us.component';
+import {MatSidenavModule} from '@angular/material/sidenav';
 
 @NgModule({
   declarations: [
@@ -59,6 +60,7 @@ import { ConnectUsComponent } from './connect-us/connect-us.component';
     MatNativeDateModule,
     MatDatepickerModule,
     MatCardModule,
+    MatSidenavModule,
     ChartModule,
     FormsModule,
     ReactiveFormsModule,
