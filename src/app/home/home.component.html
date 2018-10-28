@@ -1,8 +1,19 @@
 ﻿<mat-sidenav-container class="sidenav-container" (backdropClick)="sideNavClose()">
-    <mat-sidenav #sidenav mode="over" item-width="80%">
+    <mat-sidenav #sidenav mode="over" item-width="80%" class="sideNav-style">
+        <mat-card class="sideNav-card">
+            <mat-card-header>
+                <div mat-card-avatar class="sideNav-header-image"></div>
+                <mat-card-title>Lee</mat-card-title>
+                <mat-card-subtitle>不忘初心，方得始终！</mat-card-subtitle>
+            </mat-card-header>
+        </mat-card>
+        <p><a mat-flat-button [routerLink]="['/user_profile']">User Profile</a></p>
+
         <footer class="footer">
-            <p><a [routerLink]="['/login']">Logout</a></p>
-            <p><a style="text-decoration: underline;" (click)="connectUs()">Contact us</a></p>
+            <div class="button-row">
+                <button mat-flat-button color="warn" (click)="logout()">LogOut</button>
+                <button mat-flat-button color="primary" (click)="connectUs()">Contact US</button>
+            </div>
         </footer>
     </mat-sidenav>
     <mat-sidenav-content>

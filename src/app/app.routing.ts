@@ -5,10 +5,12 @@ import { LoginComponent } from './login';
 import { RegisterComponent } from './register';
 import { AuthGuard } from './_guards';
 import { NewTaskComponent } from './new-task/new-task.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
     { path: 'login', component: LoginComponent },
+    { path: 'user_profile', component: UserProfileComponent },
     { path: 'register', component: RegisterComponent },
     { path: 'new_task', component: NewTaskComponent , canActivate: [AuthGuard] },
 

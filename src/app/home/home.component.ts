@@ -120,12 +120,20 @@ export class HomeComponent implements OnInit {
   }
 
   connectUs() {
-        const dialogRef = this.dialog.open(ConnectUsComponent);
+    const dialogRef = this.dialog.open(ConnectUsComponent);
 
-        dialogRef.afterClosed().subscribe(result => {
-            console.log(`Dialog result: ${result}`);
-        });
-    }
+    dialogRef.afterClosed().subscribe(result => {
+        console.log(`Dialog result: ${result}`);
+    });
+  }
+
+  logout() {
+    this.router.navigate(['/login']);
+  }
+
+  userProfile() {
+    this.router.navigate(['/user_profile']);
+  }
 
   arrayConvert(history: Map<number, number>) {
     var historyArray = MapArrayConverter.toArray(history);

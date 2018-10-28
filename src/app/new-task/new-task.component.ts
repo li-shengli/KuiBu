@@ -26,10 +26,10 @@ export class NewTaskComponent implements OnInit {
   ngOnInit() {
      this.newTaskForm = this.formBuilder.group({
             taskType: ["Reading", Validators.required],
-            taskName: ["Reading a book", Validators.required],
-            expectedDays: [10, Validators.required],
-            pagesCurrent: [0, Validators.required],
-            pagesIntotal: [500, Validators.required]
+            taskName: ["", Validators.required],
+            expectedDays: [Validators.required],
+            pagesCurrent: [Validators.required],
+            pagesIntotal: [Validators.required]
         });
   }
 

@@ -38,3 +38,23 @@
   left: 0;
   right: 0;
 }
+
+.sideNav-style {
+  min-width: 350px;
+  background-color: lightgreen;
+}
+
+.sideNav-card {
+  background-image: url(../../assets/img/sideNav-header.jpg);
+}
+
+.sideNav-header-image {
+  background-image: url(../../assets/img/125495334_31n.jpg);
+  background-size: cover;
+}
+
+.footer {
+  position: absolute;
+  bottom: 10px;
+  width: 100%;
+}

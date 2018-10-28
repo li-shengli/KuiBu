@@ -32,7 +32,8 @@ import { fakeBackendProvider } from './_helpers';
 import { ReactiveFormsModule, FormsModule }    from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ConnectUsComponent } from './connect-us/connect-us.component';
-import {MatSidenavModule} from '@angular/material/sidenav';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { UserProfileComponent } from './user-profile/user-profile.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import {MatSidenavModule} from '@angular/material/sidenav';
     HomeComponent,
     LoginComponent,
     RegisterComponent,
-    ConnectUsComponent
+    ConnectUsComponent,
+    UserProfileComponent
   ],
   imports: [
     BrowserModule,
