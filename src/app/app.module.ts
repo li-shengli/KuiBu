@@ -33,6 +33,7 @@ import { ReactiveFormsModule, FormsModule }    from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ConnectUsComponent } from './connect-us/connect-us.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 
 @NgModule({
@@ -67,6 +68,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    MatListModule,
     routing
   ],
   entryComponents: [

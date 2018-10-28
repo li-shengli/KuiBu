@@ -1,5 +1,5 @@
 ﻿<mat-sidenav-container class="sidenav-container" (backdropClick)="sideNavClose()">
-    <mat-sidenav #sidenav mode="over" item-width="80%" class="sideNav-style">
+    <mat-sidenav #sidenav mode="over" autoFocus="false" item-width="80%" class="sideNav-style">
         <mat-card class="sideNav-card">
             <mat-card-header>
                 <div mat-card-avatar class="sideNav-header-image"></div>
@@ -7,7 +7,17 @@
                 <mat-card-subtitle>不忘初心，方得始终！</mat-card-subtitle>
             </mat-card-header>
         </mat-card>
-        <p><a mat-flat-button [routerLink]="['/user_profile']">User Profile</a></p>
+
+        <mat-nav-list>
+            <a mat-list-item [routerLink]="['/user_profile']">
+                <mat-icon svgIcon="user_profile"> </mat-icon>
+                User Profile
+            </a>
+            <a mat-list-item>
+                <mat-icon svgIcon="data_backup"> </mat-icon>
+                Data Synchronization
+            </a>
+        </mat-nav-list>
 
         <footer class="footer">
             <div class="button-row">

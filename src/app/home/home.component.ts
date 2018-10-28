@@ -40,6 +40,12 @@ export class HomeComponent implements OnInit {
       iconRegistry.addSvgIcon(
         'clear',
         sanitizer.bypassSecurityTrustResourceUrl('../../assets/img/close.svg'));
+      iconRegistry.addSvgIcon(
+        'user_profile',
+        sanitizer.bypassSecurityTrustResourceUrl('../../assets/img/user_profile.svg'));
+      iconRegistry.addSvgIcon(
+        'data_backup',
+        sanitizer.bypassSecurityTrustResourceUrl('../../assets/img/data_backup.svg'));
     }
 
   ngOnInit() {
