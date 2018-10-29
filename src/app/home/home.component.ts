@@ -132,7 +132,9 @@ export class HomeComponent implements OnInit {
   }
 
   connectUs() {
-    const dialogRef = this.dialog.open(ConnectUsComponent);
+    const dialogRef = this.dialog.open(ConnectUsComponent, {
+      panelClass: 'contact-us-container'
+    });
 
     dialogRef.afterClosed().subscribe(result => {
         console.log(`Dialog result: ${result}`);

@@ -11,8 +11,8 @@ import { DataSyncComponent } from './data-sync/data-sync.component';
 const appRoutes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
     { path: 'login', component: LoginComponent },
-    { path: 'data_sync', component: DataSyncComponent },
-    { path: 'user_profile', component: UserProfileComponent },
+    { path: 'data_sync', component: DataSyncComponent, canActivate: [AuthGuard] },
+    { path: 'user_profile', component: UserProfileComponent, canActivate: [AuthGuard] },
     { path: 'register', component: RegisterComponent },
     { path: 'new_task', component: NewTaskComponent , canActivate: [AuthGuard] },
 

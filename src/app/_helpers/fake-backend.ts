@@ -223,14 +223,11 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
                 // validation
                 let matchedUsers = users.filter(user => { return user.id === newUser.id; });
-                if (matchedUsers) {
-                    return throwError({ error: { message: 'Username "' + newUser.username + '" is already taken' } });
-                }
-
                 matchedUsers[0].nickName = newUser.nickName;
                 matchedUsers[0].motto = newUser.motto;
 
                 // save user
+                localStorage.setItem('currentUser', JSON.stringify(matchedUsers[0]));
                 localStorage.setItem('users', JSON.stringify(users));
 
                 // respond 200 OK

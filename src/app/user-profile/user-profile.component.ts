@@ -21,7 +21,7 @@ export class UserProfileComponent implements OnInit {
 
   ngOnInit() {
     this.userDetailsForm = this.formBuilder.group ({
-      userId: [this.currentUser.id],
+      id: [this.currentUser.id],
       nickName: [this.currentUser.nickName],
       motto: [this.currentUser.motto]
     });
@@ -34,6 +34,7 @@ export class UserProfileComponent implements OnInit {
     this.userService.update(this.userDetailsForm.value).subscribe(
       data => {
         console.log('user stored');
+        this.router.navigate(['']);
       },
       error => {
         console.log('something is wrong: '+ error.message);
