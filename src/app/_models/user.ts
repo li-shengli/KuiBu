@@ -3,5 +3,6 @@
     username: string;
     password: string;
     nickName: string;
+    motto: string;
     profileUrl: string;
 }

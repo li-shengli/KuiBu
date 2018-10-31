@@ -215,6 +215,28 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 return of(new HttpResponse({ status: 200 }));
             }
 
+            // update user
+            if (request.url.endsWith('/user/update') && request.method === 'POST') {
+                console.log ("update user into localStorage...");
+                // get new user object from post body
+                let newUser = request.body;
+
+                // validation
+                let matchedUsers = users.filter(user => { return user.id === newUser.id; });
+                if (matchedUsers) {
+                    return throwError({ error: { message: 'Username "' + newUser.username + '" is already taken' } });
+                }
+
+                matchedUsers[0].nickName = newUser.nickName;
+                matchedUsers[0].motto = newUser.motto;
+
+                // save user
+                localStorage.setItem('users', JSON.stringify(users));
+
+                // respond 200 OK
+                return of(new HttpResponse({ status: 200 }));
+            }
+
             // delete user
             if (request.url.match(/\/users\/\d+$/) && request.method === 'DELETE') {
                 // check for fake auth token in header and return user if valid, this security is implemented server side in a real application

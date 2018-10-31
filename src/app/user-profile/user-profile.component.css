@@ -1,0 +1,19 @@
+.inpiut-full-width {
+  width: 100%;
+}
+
+.user-details-container {
+  display: flex;
+  flex-direction: column;
+  margin: 8px;
+}
+
+.user-details-container > * {
+  width: 90%;
+}
+
+.button-row button,
+.button-row a {
+  margin-right: 8px;
+  float: right;
+}

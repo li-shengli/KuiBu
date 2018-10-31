@@ -21,6 +21,7 @@ import {MatSidenav} from '@angular/material/sidenav';
     styleUrls: ['./home.component.css']})
 export class HomeComponent implements OnInit {
   title = 'KuiBu';
+  currentUser = JSON.parse(localStorage.getItem('currentUser'));
   selectedIndex: number = 1;
   submitTaskForms: FormGroup[] = [];
   ongoingTaskForms: FormGroup[] = [];

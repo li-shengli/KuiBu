@@ -22,7 +22,7 @@ export class UserService {
     }
 
     update(user: User) {
-        return this.http.put('/users/' + user.id, user);
+        return this.http.post('/user/update', user);
     }
 
     delete(id: number) {

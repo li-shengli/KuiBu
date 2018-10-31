@@ -1,8 +1,15 @@
-<h2>TODO</h2>
-<p>Page used to update User Information:</p>
-<ul>
-  <li>User password</li>
-  <li>User Profile</li>
-  <li>User Nick Name</li>
-  <li>...</li>
-</ul>
+<form [formGroup]="userDetailsForm" (ngSubmit)="onSubmit()">
+  <div class="user-details-container">
+    <input hidden formControlName="userId">
+    <mat-form-field>
+      <input matInput formControlName="nickName" placeholder="User Nick Name">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput formControlName="motto" placeholder="User Motto">
+    </mat-form-field>
+  </div>
+  <div class="button-row">
+      <button mat-raised-button type="submit">Update</button>
+      <button mat-raised-button [routerLink]="['']">Canel</button>
+  </div>
+</form>
