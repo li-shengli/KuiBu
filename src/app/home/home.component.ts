@@ -21,6 +21,7 @@ import {MatSidenav} from '@angular/material/sidenav';
     styleUrls: ['./home.component.css']})
 export class HomeComponent implements OnInit {
   title = 'KuiBu';
+  selectedIndex: number = 1;
   submitTaskForms: FormGroup[] = [];
   ongoingTaskForms: FormGroup[] = [];
   submittedTasks: TaskInfo[] = [];
@@ -49,6 +50,8 @@ export class HomeComponent implements OnInit {
     }
 
   ngOnInit() {
+    this.submitTaskForms = [];
+    this.ongoingTaskForms = [];
     this.taskService.getAllTasks().subscribe(
       data => {
           console.log("retrieve tasks..." + JSON.stringify(data));
@@ -59,14 +62,16 @@ export class HomeComponent implements OnInit {
           for (let i = 0; i < this.submittedTasks.length; i++) {
             console.log('task history 3: '+ Array.from(this.submittedTasks[i].history));
 
-            this.submitTaskForms[i] = this.formBuilder.group({
-              taskId: [this.submittedTasks[i].taskId],
-              taskType: [this.submittedTasks[i].taskType],
-              taskName: [this.submittedTasks[i].taskName, Validators.required],
-              pagesCurrent: [this.submittedTasks[i].pagesCurrent, [Validators.required, Validators.pattern('[\d]')]],
-              pagesIntotal: [this.submittedTasks[i].pagesIntotal, [Validators.required, Validators.pattern('[\d]')]],
-              expectedDays: [this.submittedTasks[i].expectedDays, [Validators.required, Validators.pattern('[\d]')]]
-            });
+            this.submitTaskForms.push(
+              this.formBuilder.group({
+                taskId: [this.submittedTasks[i].taskId],
+                taskType: [this.submittedTasks[i].taskType],
+                taskName: [this.submittedTasks[i].taskName, Validators.required],
+                pagesCurrent: [this.submittedTasks[i].pagesCurrent, [Validators.required, Validators.pattern('[\d]')]],
+                pagesIntotal: [this.submittedTasks[i].pagesIntotal, [Validators.required, Validators.pattern('[\d]')]],
+                expectedDays: [this.submittedTasks[i].expectedDays, [Validators.required, Validators.pattern('[\d]')]]
+              })
+            );
           }
 
           for (let i=0; i<this.ongoingTasks.length; i++) {
@@ -158,8 +163,9 @@ export class HomeComponent implements OnInit {
     task.value.startTime = new Date();
     this.taskService.updateReadingTask(task.value).subscribe(
       data => {
-          this.reloadCurrentPage();
-          console.log('everything goes well. go to home page');
+        this.selectedIndex = 1;
+        this.reloadCurrentPage();
+        console.log('everything goes well. go to home page');
       },
       error => {
         console.log('something is wrong: '+ error.message);
@@ -181,8 +187,15 @@ export class HomeComponent implements OnInit {
       });
   }
 
-  delete(task: FormGroup) {
+  delete(task: FormGroup, taskIndex: number, taskType: string) {
     console.log("Delete the task: " + task.value.taskName);
+    if ('submitted' == taskType) {
+      console.log("Delete a Submitted taskIndex: " + taskIndex);
+      this.submitTaskForms.slice(taskIndex, 1);
+    } else if ('on-going' == taskType) {
+      console.log("Delete a On-going taskIndex: " + taskIndex);
+      this.ongoingTaskForms.slice(taskIndex, 1);
+    }
     this.taskService.deleteReadingTask(task.value).subscribe(
       data => {
           this.reloadCurrentPage();
@@ -192,11 +205,12 @@ export class HomeComponent implements OnInit {
         console.log('something is wrong: '+ error.message);
         this.alertService.error(error.message);
       });
+      
   }
   
   openDialog(): void {
     const dialogRef = this.dialog.open(NewTaskComponent, {
-      width: '350px'
+      width: '300px'
     });
 
     dialogRef.afterClosed().pipe(first()).subscribe(result => {
@@ -204,6 +218,7 @@ export class HomeComponent implements OnInit {
         console.log('Dialog result: '+ `${result.value}`);
         this.taskService.createTask(result.value).subscribe(
           data => {
+              this.selectedIndex = 0;
               this.reloadCurrentPage();
               console.log('everything goes well. go to home page.')
           },

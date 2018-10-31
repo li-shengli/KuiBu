@@ -35,6 +35,7 @@ import { ConnectUsComponent } from './connect-us/connect-us.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { DataSyncComponent } from './data-sync/data-sync.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
     LoginComponent,
     RegisterComponent,
     ConnectUsComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    DataSyncComponent
   ],
   imports: [
     BrowserModule,
