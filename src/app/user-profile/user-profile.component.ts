@@ -41,4 +41,20 @@ export class UserProfileComponent implements OnInit {
         this.alertService.error(error.message);
       });
   }
+
+  captureSuccess (mediaFiles) {
+      var i, path, len;
+      for (i = 0, len = mediaFiles.length; i < len; i += 1) {
+          path = mediaFiles[i].fullPath;
+          // do something interesting with the file
+      }
+  };
+
+  // capture error callback
+  captureError (error) {
+  //    navigator.notification.alert('Error code: ' + error.code, null, 'Capture Error');
+  };
+
+  // start image capture
+  //navigator.device.capture.captureImage(captureSuccess, captureError, {limit:2});
 }

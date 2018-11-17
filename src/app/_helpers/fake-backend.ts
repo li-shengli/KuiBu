@@ -39,7 +39,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             }
 
             // get all task by username
-            if (request.url.match(/\/task\/all\/\w+$/) && request.method === 'GET') {
+            if (request.url.match(/\/task\/all\/.+$/) && request.method === 'GET') {
                 console.log ("retrive tasks from localStorage...");
 
                 let submittedTasks: TaskInfo[] = [];
