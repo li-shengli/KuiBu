@@ -91,7 +91,7 @@
                                 </mat-panel-description>
                             </mat-expansion-panel-header>
                             <div class="task-details-container">
-                                <mat-progress-bar mode="determinate" [value]="task.value.progress"></mat-progress-bar>
+                                <mat-progress-bar mode="determinate" [value]="task.value.progress" class="progress-bar"></mat-progress-bar>
                                 <input hidden formControlName="taskId">
                                 <input hidden type="number" formControlName="taskStatus">
                                 <mat-form-field class="input-full-width">
@@ -101,14 +101,6 @@
                                         </mat-option>
                                     </mat-select>
                                 </mat-form-field>
-                                <!-- 
-                                <mat-form-field class="input-full-width">
-                                    <input matInput type="number" formControlName="pagesCurrent" placeholder="Current Page">
-                                    <button mat-button *ngIf="task.value.pagesCurrent != 0" matSuffix mat-icon-button aria-label="Clear" (click)="task.controls.pagesCurrent=''">
-                                        <mat-icon svgIcon="clear"></mat-icon>
-                                    </button>
-                                </mat-form-field>
-                                -->
                                 <mat-form-field class="input-full-width">
                                     <input matInput type="number" formControlName="pagesIntotal" readonly="true" placeholder="Total Pages">
                                 </mat-form-field>

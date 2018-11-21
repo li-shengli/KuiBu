@@ -49,17 +49,22 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 tasks.forEach(task => {
                     console.log ("retrive Submitted tasks from localStorage... and oldHistory ");
 
-                    task.history = this.getTaskHistory(task.taskId);
+                    let username = localStorage.getItem('currentUserId');
+                    if (task.username == username) {
+                        
+                        task.history = this.getTaskHistory(task.taskId);
 
-                    if (task.taskStatus === "Submitted") {
-                        submittedTasks.push(task);
-                    } else if  (task.taskStatus === "Executing") {
-                        console.log ("retrive Executing tasks from localStorage...");
-                        ongoingTasks.push(task);
-                    } else {
-                        console.log ("retrive Finished tasks from localStorage...");
-                        doneTasks.push(task);
+                        if (task.taskStatus === "Submitted") {
+                            submittedTasks.push(task);
+                        } else if  (task.taskStatus === "Executing") {
+                            console.log ("retrive Executing tasks from localStorage...");
+                            ongoingTasks.push(task);
+                        } else {
+                            console.log ("retrive Finished tasks from localStorage...");
+                            doneTasks.push(task);
+                        }
                     }
+
                 });
 
                 let allTasks = {

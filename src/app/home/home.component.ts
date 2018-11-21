@@ -256,7 +256,7 @@ export class HomeComponent implements OnInit {
             this.alertService.error(error.message);
         }
     );
-    
+    this.ongoingTaskForms[taskIndex].value.progress = 100*this.ongoingTasks[taskIndex].pagesCurrent/this.ongoingTasks[taskIndex].pagesIntotal;
     this.ongoingTaskForms[taskIndex].value.chartData.removeSerie(0);
     this.ongoingTaskForms[taskIndex].value.chartData.addSerie({
             name: 'Days',
