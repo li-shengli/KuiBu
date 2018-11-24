@@ -36,6 +36,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { DataSyncComponent } from './data-sync/data-sync.component';
+import { DialogConfirmDialog } from './delete-confirm/delete-confirm.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,8 @@ import { DataSyncComponent } from './data-sync/data-sync.component';
     RegisterComponent,
     ConnectUsComponent,
     UserProfileComponent,
-    DataSyncComponent
+    DataSyncComponent,
+    DialogConfirmDialog
   ],
   imports: [
     BrowserModule,
@@ -75,7 +77,8 @@ import { DataSyncComponent } from './data-sync/data-sync.component';
   ],
   entryComponents: [
     NewTaskComponent,
-    ConnectUsComponent
+    ConnectUsComponent,
+    DialogConfirmDialog
   ],
   providers: [
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: true}},

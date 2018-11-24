@@ -15,6 +15,7 @@ import { TaskService, AlertService } from '../_services';
 import { ConnectUsComponent } from '../connect-us/connect-us.component';
 
 import {MatSidenav} from '@angular/material/sidenav';
+import {DialogConfirmDialog} from '../delete-confirm/delete-confirm.component';
 
 @Component({
     templateUrl: 'home.component.html',
@@ -85,6 +86,7 @@ export class HomeComponent implements OnInit {
               taskStatus: [this.ongoingTasks[i].taskStatus],
               pagesIntotal: [this.ongoingTasks[i].pagesIntotal],
               pagesCurrent: [this.ongoingTasks[i].pagesCurrent],
+              startTime: [this.ongoingTasks[i].startTime],
               progress: 100*this.ongoingTasks[i].pagesCurrent/this.ongoingTasks[i].pagesIntotal,
               chartData: new Chart({
                 chart: {
@@ -231,6 +233,16 @@ export class HomeComponent implements OnInit {
           });;
       } else {
         console.log('dialog closed, no need to refresh the task list.');
+      }
+    });
+  }
+
+  deleteDialog(task: FormGroup, taskIndex: number, taskType: string) {
+    const dialogRef = this.dialog.open(DialogConfirmDialog);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+          this.delete(task, taskIndex, taskType);
       }
     });
   }
