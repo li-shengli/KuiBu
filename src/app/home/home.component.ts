@@ -86,8 +86,9 @@ export class HomeComponent implements OnInit {
               taskStatus: [this.ongoingTasks[i].taskStatus],
               pagesIntotal: [this.ongoingTasks[i].pagesIntotal],
               pagesCurrent: [this.ongoingTasks[i].pagesCurrent],
-              startTime: [this.ongoingTasks[i].startTime],
+              startTime: [new Date(this.ongoingTasks[i].startTime).toLocaleString()],
               progress: 100*this.ongoingTasks[i].pagesCurrent/this.ongoingTasks[i].pagesIntotal,
+              progressColor: this.progressTheme(this.ongoingTasks[i]),
               chartData: new Chart({
                 chart: {
                   type: 'line'
@@ -127,6 +128,24 @@ export class HomeComponent implements OnInit {
       error => {
           this.alertService.error(error.message);
       });
+  }
+
+  progressTheme(taskInfo: TaskInfo) {
+    var buffer: number = 0.05;
+    var d: number = (Date.now() - Date.parse(taskInfo.startTime.toString()))/(24*60*60*1000);
+    var daysPassed = parseInt(d.toString());
+    var pageAlreadyDone = taskInfo.history.get(0);
+
+    var actualProgress = taskInfo.pagesCurrent / taskInfo.pagesIntotal;
+    var expectedProgress = (pageAlreadyDone / taskInfo.pagesIntotal) + (taskInfo.pagesCurrent - pageAlreadyDone) / taskInfo.pagesIntotal * daysPassed;
+
+    if (actualProgress - expectedProgress > buffer) {
+      return "accent";
+    } else if (expectedProgress - actualProgress > buffer) {
+      return "warn";
+    }
+    
+    return "primary";
   }
 
   sideNavClose() {
@@ -257,7 +276,7 @@ export class HomeComponent implements OnInit {
         this.ongoingTasks[taskIndex].startTime = this.ongoingTasks[taskIndex].createTime;
     }
     var d: number = (Date.now() - Date.parse(this.ongoingTasks[taskIndex].startTime.toString()))/(24*60*60*1000);
-    this.ongoingTasks[taskIndex].history.set(parseInt(d.toString()), changed.value);
+    this.ongoingTasks[taskIndex].history.set(parseInt(d.toString())+1, changed.value);
     this.ongoingTasks[taskIndex].pagesCurrent = changed.value;
     this.taskService.updateReadingTask(this.ongoingTasks[taskIndex]).subscribe(
         data => {
@@ -269,6 +288,7 @@ export class HomeComponent implements OnInit {
         }
     );
     this.ongoingTaskForms[taskIndex].value.progress = 100*this.ongoingTasks[taskIndex].pagesCurrent/this.ongoingTasks[taskIndex].pagesIntotal;
+    this.ongoingTaskForms[taskIndex].value.progressColor = this.progressTheme (this.ongoingTasks[taskIndex]);
     this.ongoingTaskForms[taskIndex].value.chartData.removeSerie(0);
     this.ongoingTaskForms[taskIndex].value.chartData.addSerie({
             name: 'Days',

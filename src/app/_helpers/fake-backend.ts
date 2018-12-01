@@ -51,7 +51,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
                     let username = localStorage.getItem('currentUserId');
                     if (task.username == username) {
-                        
+
                         task.history = this.getTaskHistory(task.taskId);
 
                         if (task.taskStatus === "Submitted") {
@@ -110,7 +110,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                     console.log ("How many pages done: "+currentPage);
 
                     var taskHistory = this.getTaskHistory(matchedTask.taskId);
-                    taskHistory.set(parseInt(d.toString()), currentPage);
+                    taskHistory.set(parseInt(d.toString()+1), currentPage);
                     localStorage.setItem(matchedTask.taskId, JSON.stringify(MapArrayConverter.toArray(taskHistory)));
                     console.log ("The updated task " + JSON.stringify(matchedTask));
 

@@ -13,6 +13,9 @@ export class MapArrayConverter {
     }
 
     static toMap(historyArray: any[]) {
+        if (historyArray == null) {
+            historyArray = [];
+        }
         console.log(historyArray);
         var history:Map<number, number> = new Map();
 

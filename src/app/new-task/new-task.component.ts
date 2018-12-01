@@ -8,7 +8,7 @@ import { AlertService, TaskService } from '../_services';
 @Component({
   selector: 'new-task.component',
   templateUrl: './new-task.component.html',
-  styleUrls: ['./new-task.component.css', '../../assets/css/bootstrap.min.css']
+  styleUrls: ['./new-task.component.css']
 })
 export class NewTaskComponent implements OnInit {
   newTaskForm: FormGroup;
