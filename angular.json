@@ -25,7 +25,9 @@
             "styles": [
               "src/styles.css"
             ],
-            "scripts": []
+            "scripts": [
+			  "src/assets/js/jweixin-1.4.0.js"
+			]
           },
           "configurations": {
             "production": {

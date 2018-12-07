@@ -79,16 +79,25 @@ export class HomeComponent implements OnInit {
           for (let i=0; i<this.ongoingTasks.length; i++) {
             console.log("Show task : " + this.ongoingTasks[i].taskName);
 
-            this.ongoingTaskForms[i] = this.formBuilder.group ({
-              taskId: [this.ongoingTasks[i].taskId],
-              taskType: [this.ongoingTasks[i].taskType],
-              taskName: [this.ongoingTasks[i].taskName, Validators.required],
-              taskStatus: [this.ongoingTasks[i].taskStatus],
-              pagesIntotal: [this.ongoingTasks[i].pagesIntotal],
-              pagesCurrent: [this.ongoingTasks[i].pagesCurrent],
-              startTime: [new Date(this.ongoingTasks[i].startTime).toLocaleString()],
-              progress: 100*this.ongoingTasks[i].pagesCurrent/this.ongoingTasks[i].pagesIntotal,
-              progressColor: this.progressTheme(this.ongoingTasks[i]),
+            this.ongoingTaskForms[i] = this.taskForGroup(this.ongoingTasks[i]);
+          }
+      },
+      error => {
+          this.alertService.error(error.message);
+      });
+  }
+
+  taskForGroup(taskInfo: TaskInfo) {
+   return this.formBuilder.group ({
+              taskId: [taskInfo.taskId],
+              taskType: [taskInfo.taskType],
+              taskName: [taskInfo.taskName, Validators.required],
+              taskStatus: [taskInfo.taskStatus],
+              pagesIntotal: [taskInfo.pagesIntotal],
+              pagesCurrent: [taskInfo.pagesCurrent],
+              startTime: [new Date(taskInfo.startTime).toLocaleString()],
+              progress: 100*taskInfo.pagesCurrent/taskInfo.pagesIntotal,
+              progressColor: this.progressTheme(taskInfo),
               chartData: new Chart({
                 chart: {
                   type: 'line'
@@ -104,8 +113,8 @@ export class HomeComponent implements OnInit {
                   title: {
                     text: ''
                   },
-                  tickInterval: this.ongoingTasks[i].pagesIntotal/10,
-                  ceiling: this.ongoingTasks[i].pagesIntotal,
+                  tickInterval: taskInfo.pagesIntotal/10,
+                  ceiling: taskInfo.pagesIntotal,
                   
                 },
                 plotOptions: {
@@ -118,16 +127,11 @@ export class HomeComponent implements OnInit {
                 series: [
                   {
                     name: 'Days',
-                    data: this.arrayConvert(this.ongoingTasks[i].history)
+                    data: this.arrayConvert(taskInfo.history)
                   }
                 ]
               })
             })
-          }
-      },
-      error => {
-          this.alertService.error(error.message);
-      });
   }
 
   progressTheme(taskInfo: TaskInfo) {
