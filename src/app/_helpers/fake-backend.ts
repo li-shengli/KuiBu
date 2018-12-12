@@ -90,6 +90,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                     console.log ("One task was found from localStorage..." + JSON.stringify(matchedTask));
 
                     matchedTask.taskStatus = task.taskStatus;
+
+                    var pageChanged = task.pagesCurrent - matchedTask.pagesCurrent
                     matchedTask.pagesCurrent = task.pagesCurrent;
 
                     if (matchedTask.startTime == null) {
@@ -112,10 +114,12 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                     }
                     console.log ("How many pages done: "+currentPage);
 
-                    var taskHistory = this.getTaskHistory(matchedTask.taskId);
-                    taskHistory.set(parseInt(d.toString())+1, currentPage);
-                    localStorage.setItem(matchedTask.taskId, JSON.stringify(MapArrayConverter.toArray(taskHistory)));
-                    console.log ("The updated task " + JSON.stringify(matchedTask));
+                    if (pageChanged > 0) {
+                        var taskHistory = this.getTaskHistory(matchedTask.taskId);
+                        taskHistory.set(parseInt(d.toString())+1, currentPage);
+                        localStorage.setItem(matchedTask.taskId, JSON.stringify(MapArrayConverter.toArray(taskHistory)));
+                        console.log ("The updated task " + JSON.stringify(matchedTask));
+                    }
 
                     localStorage.setItem('tasks', JSON.stringify(tasks));
 
