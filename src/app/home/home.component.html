@@ -109,6 +109,7 @@
                                 </mat-form-field>
                                 <div [chart]="task.value.chartData"></div>
                                 <div class="button-row">
+                                    <button mat-raised-button (click)="doneDialog(task, taskIndex, 'on-going')">Done</button>
                                     <button mat-raised-button (click)="deleteDialog(task, taskIndex, 'on-going')">Delete</button>
                                 </div>
                             </div>
@@ -117,7 +118,38 @@
                     </div>
                 </mat-accordion>
             </mat-tab>
-            <mat-tab label="Achievement">Tasks have been done</mat-tab>
+            <mat-tab label="Achievement">
+                <mat-accordion>
+                    <div *ngFor="let task of doneTaskForms; index as taskIndex;">
+                    <form [formGroup]="task" >
+                        <mat-expansion-panel>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    {{task.value.taskType}}
+                                </mat-panel-title>
+                                <mat-panel-description>
+                                    {{task.value.taskName}}
+                                </mat-panel-description>
+                            </mat-expansion-panel-header>
+                            <div class="task-details-container">
+                                <input hidden formControlName="taskId">
+                                <input hidden type="number" formControlName="taskStatus">
+                                <mat-form-field class="input-full-width">
+                                    <input matInput type="number" formControlName="pagesIntotal" readonly="true" placeholder="Total Pages">
+                                </mat-form-field>
+                                <mat-form-field class="input-full-width">
+                                    <input matInput formControlName="startTime" readonly="true" placeholder="Start Time">
+                                </mat-form-field>
+                                <mat-form-field class="input-full-width">
+                                    <input matInput formControlName="endTime" readonly="true" placeholder="Start Time">
+                                </mat-form-field>
+                                <div [chart]="task.value.chartData"></div>
+                            </div>
+                        </mat-expansion-panel>
+                    </form>
+                    </div>
+                </mat-accordion>
+            </mat-tab>
         </mat-tab-group> 
     </mat-sidenav-content>
 </mat-sidenav-container>

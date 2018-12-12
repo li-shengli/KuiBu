@@ -16,6 +16,7 @@ import { ConnectUsComponent } from '../connect-us/connect-us.component';
 
 import {MatSidenav} from '@angular/material/sidenav';
 import {DialogConfirmDialog} from '../delete-confirm/delete-confirm.component';
+import {DoneConfirmComponent} from '../done-confirm/done-confirm.component';
 
 @Component({
     templateUrl: 'home.component.html',
@@ -26,6 +27,7 @@ export class HomeComponent implements OnInit {
   selectedIndex: number = 1;
   submitTaskForms: FormGroup[] = [];
   ongoingTaskForms: FormGroup[] = [];
+  doneTaskForms: FormGroup[] = [];
   submittedTasks: TaskInfo[] = [];
   ongoingTasks: TaskInfo[] = [];
   doneTasks: TaskInfo[] = [];
@@ -81,6 +83,12 @@ export class HomeComponent implements OnInit {
 
             this.ongoingTaskForms[i] = this.taskForGroup(this.ongoingTasks[i]);
           }
+
+          for (let i=0; i<this.doneTasks.length; i++) {
+            console.log("Show task : " + this.doneTasks[i].taskName);
+
+            this.doneTaskForms[i] = this.taskForGroup(this.doneTasks[i]);
+          }
       },
       error => {
           this.alertService.error(error.message);
@@ -96,6 +104,7 @@ export class HomeComponent implements OnInit {
               pagesIntotal: [taskInfo.pagesIntotal],
               pagesCurrent: [taskInfo.pagesCurrent],
               startTime: [new Date(taskInfo.startTime).toLocaleString()],
+              endTime: [new Date(taskInfo.endDate).toLocaleString()],
               progress: 100*taskInfo.pagesCurrent/taskInfo.pagesIntotal,
               progressColor: this.progressTheme(taskInfo),
               chartData: new Chart({
@@ -201,11 +210,13 @@ export class HomeComponent implements OnInit {
       });
   }
 
-  update(task: FormGroup) {
+  finish(task: FormGroup) {
     console.log("Update the task: " + task.value.taskName);
     task.value.chartData = null;
-    this.taskService.updateReadingTask(task.value).subscribe(
+    task.value.taskStatus = "Finished";
+    this.taskService.finishReadingTask(task.value).subscribe(
       data => {
+          this.selectedIndex = 2;
           this.reloadCurrentPage();
           console.log('everything goes well. go to home page.')
       },
@@ -266,6 +277,16 @@ export class HomeComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if(result) {
           this.delete(task, taskIndex, taskType);
+      }
+    });
+  }
+
+  doneDialog(task: FormGroup, taskIndex: number, taskType: string) {
+    const dialogRef = this.dialog.open(DoneConfirmComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+          this.finish(task);
       }
     });
   }

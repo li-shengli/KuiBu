@@ -24,7 +24,7 @@ import { routing }        from './app.routing';
 import { AlertComponent } from './_directives';
 import { AuthGuard } from './_guards';
 import { JwtInterceptor, ErrorInterceptor } from './_helpers';
-import { AlertService, AuthenticationService, UserService, TaskService } from './_services';
+import { AlertService, AuthenticationService, UserService, TaskService, WechatShareService } from './_services';
 import { HomeComponent } from './home';
 import { LoginComponent } from './login';
 import { RegisterComponent } from './register';
@@ -37,6 +37,7 @@ import { MatListModule } from '@angular/material/list';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { DataSyncComponent } from './data-sync/data-sync.component';
 import { DialogConfirmDialog } from './delete-confirm/delete-confirm.component';
+import { DoneConfirmComponent } from './done-confirm/done-confirm.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import { DialogConfirmDialog } from './delete-confirm/delete-confirm.component';
     ConnectUsComponent,
     UserProfileComponent,
     DataSyncComponent,
-    DialogConfirmDialog
+    DialogConfirmDialog,
+    DoneConfirmComponent
   ],
   imports: [
     BrowserModule,
@@ -78,7 +80,8 @@ import { DialogConfirmDialog } from './delete-confirm/delete-confirm.component';
   entryComponents: [
     NewTaskComponent,
     ConnectUsComponent,
-    DialogConfirmDialog
+    DialogConfirmDialog,
+    DoneConfirmComponent
   ],
   providers: [
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: true}},
@@ -87,6 +90,7 @@ import { DialogConfirmDialog } from './delete-confirm/delete-confirm.component';
     AuthenticationService,
     UserService,
     TaskService,
+    WechatShareService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
 

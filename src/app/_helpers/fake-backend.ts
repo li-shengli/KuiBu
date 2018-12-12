@@ -107,10 +107,13 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                     if (task.pagesCurrent != null) {
                         currentPage = task.pagesCurrent;
                     }
+                    if (task.endDate != null) {
+                        matchedTask.endDate = task.endDate;
+                    }
                     console.log ("How many pages done: "+currentPage);
 
                     var taskHistory = this.getTaskHistory(matchedTask.taskId);
-                    taskHistory.set(parseInt(d.toString()+1), currentPage);
+                    taskHistory.set(parseInt(d.toString())+1, currentPage);
                     localStorage.setItem(matchedTask.taskId, JSON.stringify(MapArrayConverter.toArray(taskHistory)));
                     console.log ("The updated task " + JSON.stringify(matchedTask));
 

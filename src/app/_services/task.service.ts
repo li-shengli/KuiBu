@@ -32,4 +32,12 @@ export class TaskService {
         var username = localStorage.getItem('currentUserId');
         return this.http.get(this.url_prefix + '/task/delete/'+username+'/0/' + taskInfo.taskId);
     }
+
+    finishReadingTask(taskInfo: TaskInfo) {
+        console.log("finish a reading task.");
+        taskInfo.endDate = new Date();
+        taskInfo.pagesCurrent = taskInfo.pagesIntotal;
+        
+        return this.http.post(this.url_prefix + '/task/updateReadingTask', taskInfo);
+    }
 }
