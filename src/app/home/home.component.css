@@ -59,15 +59,32 @@
   width: 100%;
 }
 
-.w3-round-small{border-radius:2px}.w3-round,.w3-round-medium{border-radius:4px}.w3-round-large{border-radius:8px}.w3-round-xlarge{border-radius:16px}.w3-round-xxlarge{border-radius:32px}
+.my-progress {
+  width: 100%;
+  border-radius:5px;
+  background-color: lightgrey;
+}
 
-.progress-bar {
+.my-progress-bar {
   border-radius:5px;
   height: 10px !important;
-  margin-bottom: 10px !important;
 }
 
 .mat-expansion-panel-header.mat-expanded {
   font-weight: bold !important;
   
+}
+
+.sticky {
+  overflow: hidden;
+  background-color: lightblue;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 10;
+}
+
+.task-content {
+  padding-top: 56px;
+  z-index: -1;
 }

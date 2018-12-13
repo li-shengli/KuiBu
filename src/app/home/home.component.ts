@@ -105,7 +105,7 @@ export class HomeComponent implements OnInit {
               pagesCurrent: [taskInfo.pagesCurrent],
               startTime: [new Date(taskInfo.startTime).toLocaleString()],
               endTime: [new Date(taskInfo.endDate).toLocaleString()],
-              progress: 100*taskInfo.pagesCurrent/taskInfo.pagesIntotal,
+              progress: this.caculateProgress(taskInfo.pagesCurrent, taskInfo.pagesIntotal),
               progressColor: this.progressTheme(taskInfo),
               chartData: new Chart({
                 chart: {
@@ -143,7 +143,15 @@ export class HomeComponent implements OnInit {
             })
   }
 
+  caculateProgress (pagesCurrent: number, pagesIntotal: number) {
+    var progress = 100*pagesCurrent/pagesIntotal +'%';
+
+    console.log("progress is " + progress);
+
+    return progress;
+  }
   progressTheme(taskInfo: TaskInfo) {
+    var backgroundColor = "blue";
     var buffer: number = 0.05;
     var d: number = (Date.now() - Date.parse(taskInfo.startTime.toString()))/(24*60*60*1000);
     var daysPassed = parseInt(d.toString());
@@ -153,12 +161,17 @@ export class HomeComponent implements OnInit {
     var expectedProgress = (pageAlreadyDone / taskInfo.pagesIntotal) + (taskInfo.pagesCurrent - pageAlreadyDone) / taskInfo.pagesIntotal * daysPassed;
 
     if (actualProgress - expectedProgress > buffer) {
-      return "accent";
+      backgroundColor = "green";
     } else if (expectedProgress - actualProgress > buffer) {
-      return "warn";
+      backgroundColor = "red";
     }
+
+    var progress = 100*taskInfo.pagesCurrent/taskInfo.pagesIntotal +'%';
     
-    return "primary";
+    var progressStyle = "{width: "+progress + "; background-color: "+backgroundColor+";}";
+
+    console.log("progressStyle is " + progressStyle);
+    return backgroundColor;
   }
 
   sideNavClose() {
@@ -312,7 +325,7 @@ export class HomeComponent implements OnInit {
             this.alertService.error(error.message);
         }
     );
-    this.ongoingTaskForms[taskIndex].value.progress = 100*this.ongoingTasks[taskIndex].pagesCurrent/this.ongoingTasks[taskIndex].pagesIntotal;
+    this.ongoingTaskForms[taskIndex].value.progress = this.caculateProgress(this.ongoingTasks[taskIndex].pagesCurrent, this.ongoingTasks[taskIndex].pagesIntotal);
     this.ongoingTaskForms[taskIndex].value.progressColor = this.progressTheme (this.ongoingTasks[taskIndex]);
     this.ongoingTaskForms[taskIndex].value.chartData.removeSerie(0);
     this.ongoingTaskForms[taskIndex].value.chartData.addSerie({

@@ -27,15 +27,18 @@
         </footer>
     </mat-sidenav>
     <mat-sidenav-content>
-        <mat-toolbar>
-            <span style="height: 56px;">
-                <img src="assets/img/125495334_31n.jpg" class="img-profile" (click)="sidenav.open()"/>
-            </span>
-            <span class="toolbar-fill-remaining-space"></span>
-            <span>
-                <button color="primary" mat-raised-button (click)="openDialog()">New</button>
-            </span>
-        </mat-toolbar>
+        <div class="sticky">
+            <mat-toolbar>
+                <span style="height: 56px;">
+                    <img src="assets/img/125495334_31n.jpg" class="img-profile" (click)="sidenav.open()"/>
+                </span>
+                <span class="toolbar-fill-remaining-space"></span>
+                <span>
+                    <button color="primary" mat-raised-button (click)="openDialog()">New</button>
+                </span>
+            </mat-toolbar>
+        </div>
+        <div class="task-content">
         <mat-tab-group selectedIndex={{selectedIndex}}>
             <mat-tab label="Backlog">
                 <mat-accordion>
@@ -91,7 +94,10 @@
                                 </mat-panel-description>
                             </mat-expansion-panel-header>
                             <div class="task-details-container">
-                                <mat-progress-bar mode="determinate" [value]="task.value.progress" [color]="task.value.progressColor" class="progress-bar"></mat-progress-bar>
+                                <div class="my-progress">
+                                    <div [ngStyle]="{'width': task.value.progress, 'background-color': task.value.progressColor}" class="my-progress-bar"></div>
+                                </div>
+                                <div style="margin-bottom: 10px"></div>
                                 <input hidden formControlName="taskId">
                                 <input hidden type="number" formControlName="taskStatus">
                                 <mat-form-field class="input-full-width">
@@ -151,5 +157,6 @@
                 </mat-accordion>
             </mat-tab>
         </mat-tab-group> 
+        </div>
     </mat-sidenav-content>
 </mat-sidenav-container>
