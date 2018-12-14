@@ -89,11 +89,23 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 if (matchedTask != null) {
                     console.log ("One task was found from localStorage..." + JSON.stringify(matchedTask));
 
-                    matchedTask.taskStatus = task.taskStatus;
-
                     var pageChanged = task.pagesCurrent - matchedTask.pagesCurrent
-                    matchedTask.pagesCurrent = task.pagesCurrent;
 
+                    if (task.taskName != null) {
+                        matchedTask.taskName = task.taskName;
+                    }
+                    if (task.pagesCurrent != null) {
+                        matchedTask.pagesCurrent = task.pagesCurrent;
+                    }
+                    if (task.pagesIntotal != null) {
+                        matchedTask.pagesIntotal = task.pagesIntotal;
+                    }
+                    if (task.expectedDays != null) {
+                        matchedTask.expectedDays = task.expectedDays;
+                    }
+                    if (task.taskStatus != null) {
+                        matchedTask.taskStatus = task.taskStatus;
+                    }
                     if (matchedTask.startTime == null) {
                         matchedTask.startTime = task.startTime;
                     } 
@@ -105,18 +117,12 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                         d = (Date.now() - Date.parse(matchedTask.startTime.toString()))/(24*60*60*1000);
                         console.log ("How many days passed: "+parseInt(d.toString()));
                     }
-                    var currentPage: number = 0;
-                    if (task.pagesCurrent != null) {
-                        currentPage = task.pagesCurrent;
-                    }
-                    if (task.endDate != null) {
-                        matchedTask.endDate = task.endDate;
-                    }
-                    console.log ("How many pages done: "+currentPage);
+
+                    console.log ("How many pages done: "+matchedTask.pagesCurrent);
 
                     if (pageChanged > 0) {
                         var taskHistory = this.getTaskHistory(matchedTask.taskId);
-                        taskHistory.set(parseInt(d.toString())+1, currentPage);
+                        taskHistory.set(parseInt(d.toString())+1, matchedTask.pagesCurrent);
                         localStorage.setItem(matchedTask.taskId, JSON.stringify(MapArrayConverter.toArray(taskHistory)));
                         console.log ("The updated task " + JSON.stringify(matchedTask));
                     }

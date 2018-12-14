@@ -104,6 +104,7 @@ export class HomeComponent implements OnInit {
               pagesIntotal: [taskInfo.pagesIntotal],
               pagesCurrent: [taskInfo.pagesCurrent],
               startTime: [new Date(taskInfo.startTime).toLocaleString()],
+              expectedDays: [taskInfo.expectedDays],
               endTime: [new Date(taskInfo.endDate).toLocaleString()],
               progress: this.caculateProgress(taskInfo.pagesCurrent, taskInfo.pagesIntotal),
               progressColor: this.progressTheme(taskInfo),
@@ -126,6 +127,11 @@ export class HomeComponent implements OnInit {
                   ceiling: taskInfo.pagesIntotal,
                   
                 },
+                xAxis: {
+                  title: {
+                    text: 'Days'
+                  }
+                },
                 plotOptions: {
                   line: {
                       dataLabels: {
@@ -133,9 +139,17 @@ export class HomeComponent implements OnInit {
                       }
                   }
                 },
+                tooltip: {
+                    formatter: function() {
+                        return 'Day <b>' + this.x + '</b> Page <b>' + this.y + '</b>';
+                    }
+                },
+                legend: {
+                    enabled: false
+                },
                 series: [
                   {
-                    name: 'Days',
+                    name:'',
                     data: this.arrayConvert(taskInfo.history)
                   }
                 ]
@@ -152,6 +166,8 @@ export class HomeComponent implements OnInit {
   }
   progressTheme(taskInfo: TaskInfo) {
     var backgroundColor = "blue";
+    if (taskInfo.startTime == null) return backgroundColor;
+
     var buffer: number = 0.05;
     var d: number = (Date.now() - Date.parse(taskInfo.startTime.toString()))/(24*60*60*1000);
     var daysPassed = parseInt(d.toString());
@@ -165,12 +181,7 @@ export class HomeComponent implements OnInit {
     } else if (expectedProgress - actualProgress > buffer) {
       backgroundColor = "red";
     }
-
-    var progress = 100*taskInfo.pagesCurrent/taskInfo.pagesIntotal +'%';
     
-    var progressStyle = "{width: "+progress + "; background-color: "+backgroundColor+";}";
-
-    console.log("progressStyle is " + progressStyle);
     return backgroundColor;
   }
 
@@ -206,6 +217,20 @@ export class HomeComponent implements OnInit {
     this.router.onSameUrlNavigation = 'reload';
     this.router.navigate(['']);
   }
+
+  update(task: FormGroup) { 
+    console.log("Update the task: " + task.value.taskName); 
+    task.value.chartData = null; 
+    this.taskService.updateReadingTask(task.value).subscribe( 
+      data => { 
+          console.log('everything goes well. go to home page.') 
+          this.router.navigate(['/home']); 
+      }, 
+      error => { 
+        console.log('something is wrong: '+ error.message); 
+        this.alertService.error(error.message); 
+      }); 
+  } 
 
   saveAndStart(task: FormGroup) {
     console.log("Update the task and start it: " + task.value.taskName);
@@ -247,6 +272,9 @@ export class HomeComponent implements OnInit {
     } else if ('on-going' == taskType) {
       console.log("Delete a On-going taskIndex: " + taskIndex);
       this.ongoingTaskForms.slice(taskIndex, 1);
+    } else {
+      console.log("Delete a Finished taskIndex: " + taskIndex);
+      this.doneTaskForms.slice(taskIndex, 1);
     }
     this.taskService.deleteReadingTask(task.value).subscribe(
       data => {

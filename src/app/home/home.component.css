@@ -16,6 +16,18 @@
   width: 100%;
 }
 
+.inpiut-half-right-width {
+  width: 35% !important;
+  float: right;
+  
+}
+
+.inpiut-half-left-width {
+  width: 60% !important;;
+  float: left;
+  
+}
+
 .task-details-container {
   display: flex;
   flex-direction: column;
