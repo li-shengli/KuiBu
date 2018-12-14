@@ -171,10 +171,10 @@ export class HomeComponent implements OnInit {
     var buffer: number = 0.05;
     var d: number = (Date.now() - Date.parse(taskInfo.startTime.toString()))/(24*60*60*1000);
     var daysPassed = parseInt(d.toString());
-    var pageAlreadyDone = taskInfo.history.get(0);
+    var pageDoneBeforeStart = taskInfo.history.get(0);
 
     var actualProgress = taskInfo.pagesCurrent / taskInfo.pagesIntotal;
-    var expectedProgress = (pageAlreadyDone / taskInfo.pagesIntotal) + (taskInfo.pagesCurrent - pageAlreadyDone) / taskInfo.pagesIntotal * daysPassed;
+    var expectedProgress = (pageDoneBeforeStart / taskInfo.pagesIntotal) + (taskInfo.pagesIntotal - pageDoneBeforeStart) / taskInfo.pagesIntotal / taskInfo.expectedDays * daysPassed;
 
     if (actualProgress - expectedProgress > buffer) {
       backgroundColor = "green";
