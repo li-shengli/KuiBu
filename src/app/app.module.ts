@@ -38,6 +38,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { DataSyncComponent } from './data-sync/data-sync.component';
 import { DialogConfirmDialog } from './delete-confirm/delete-confirm.component';
 import { DoneConfirmComponent } from './done-confirm/done-confirm.component';
+import { MatMenuModule} from '@angular/material/menu';
 
 @NgModule({
   declarations: [
@@ -75,6 +76,7 @@ import { DoneConfirmComponent } from './done-confirm/done-confirm.component';
     ReactiveFormsModule,
     HttpClientModule,
     MatListModule,
+    MatMenuModule,
     routing
   ],
   entryComponents: [

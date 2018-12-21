@@ -19,6 +19,6 @@ export class ConnectUsComponent implements OnInit {
     let imgUrl = "../../assets/img/home.jpg";
     let desc = "for test";
     let slug = "Nothing";
-    this.weChatService.getShareDataAndReady(title, imgUrl, desc, slug);
+    this.weChatService.doShare(title, imgUrl, desc, slug);
   }
 }

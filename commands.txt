@@ -1,2 +1,3 @@
 npm install wechat-jssdk --save  // install wechat-jssdk
 npm install sha1
+npm install --save html-to-image

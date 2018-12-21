@@ -18,6 +18,13 @@ import {MatSidenav} from '@angular/material/sidenav';
 import {DialogConfirmDialog} from '../delete-confirm/delete-confirm.component';
 import {DoneConfirmComponent} from '../done-confirm/done-confirm.component';
 
+import {MatMenuModule, MatMenuTrigger} from '@angular/material/menu';
+
+declare var require: any;
+declare var Wechat: any;
+
+var htmlToImage = require('html-to-image');
+
 @Component({
     templateUrl: 'home.component.html',
     styleUrls: ['./home.component.css']})
@@ -32,6 +39,7 @@ export class HomeComponent implements OnInit {
   ongoingTasks: TaskInfo[] = [];
   doneTasks: TaskInfo[] = [];
   @ViewChild('sidenav') sidenav: MatSidenav;
+  @ViewChild(MatMenuTrigger) trigger: MatMenuTrigger;
 
   constructor(
     public dialog: MatDialog,
@@ -362,5 +370,33 @@ export class HomeComponent implements OnInit {
         });
 
     
+  }
+
+  share(taskIndex: number) {
+    var node = document.getElementById('Book_'+taskIndex);
+    htmlToImage.toPng(node)
+      .then(function (dataUrl) {
+        var img = new Image();
+        img.src = dataUrl;
+        console.log('Image Url: '+ img);
+        Wechat.share({
+            message: {
+              title: "STEP - Reading a Book",
+              description: "One Book Done",
+              media: {
+                type: Wechat.Type.IMAGE,
+                image: dataUrl
+              }
+            },
+            scene: Wechat.Scene.SESSION   // share to wechat
+        }, function () {
+            alert("Success");
+        }, function (reason) {
+            alert("Failed: " + reason);
+        });
+      })
+      .catch(function (error) {
+        console.error('oops, something went wrong!', error);
+      });
   }
 }
