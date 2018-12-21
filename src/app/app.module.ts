@@ -39,6 +39,7 @@ import { DataSyncComponent } from './data-sync/data-sync.component';
 import { DialogConfirmDialog } from './delete-confirm/delete-confirm.component';
 import { DoneConfirmComponent } from './done-confirm/done-confirm.component';
 import { MatMenuModule} from '@angular/material/menu';
+import { TaskSharingComponent } from './task-sharing/task-sharing.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { MatMenuModule} from '@angular/material/menu';
     UserProfileComponent,
     DataSyncComponent,
     DialogConfirmDialog,
-    DoneConfirmComponent
+    DoneConfirmComponent,
+    TaskSharingComponent
   ],
   imports: [
     BrowserModule,
@@ -83,7 +85,8 @@ import { MatMenuModule} from '@angular/material/menu';
     NewTaskComponent,
     ConnectUsComponent,
     DialogConfirmDialog,
-    DoneConfirmComponent
+    DoneConfirmComponent,
+    TaskSharingComponent
   ],
   providers: [
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: true}},

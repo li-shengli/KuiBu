@@ -162,7 +162,7 @@
                                     <button mat-button [matMenuTriggerFor]="menu"><mat-icon>more_horiz</mat-icon></button>
                                     <mat-menu #menu="matMenu">
                                         <button mat-menu-item (click)="deleteDialog(task, taskIndex, 'Finished')">Delete</button>
-                                        <button mat-menu-item (click)="share(taskIndex)">Share</button>
+                                        <button mat-menu-item (click)="shareDialog(task, taskIndex, 'Finished')">Share</button>
                                     </mat-menu>
                                 </div>
                             </div>

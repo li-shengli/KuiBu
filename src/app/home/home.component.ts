@@ -17,6 +17,7 @@ import { ConnectUsComponent } from '../connect-us/connect-us.component';
 import {MatSidenav} from '@angular/material/sidenav';
 import {DialogConfirmDialog} from '../delete-confirm/delete-confirm.component';
 import {DoneConfirmComponent} from '../done-confirm/done-confirm.component';
+import {TaskSharingComponent} from '../task-sharing/task-sharing.component';
 
 import {MatMenuModule, MatMenuTrigger} from '@angular/material/menu';
 
@@ -332,6 +333,16 @@ export class HomeComponent implements OnInit {
 
   doneDialog(task: FormGroup, taskIndex: number, taskType: string) {
     const dialogRef = this.dialog.open(DoneConfirmComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+          this.finish(task);
+      }
+    });
+  }
+
+  shareDialog(task: FormGroup, taskIndex: number, taskType: string) {
+    const dialogRef = this.dialog.open(TaskSharingComponent);
 
     dialogRef.afterClosed().subscribe(result => {
       if(result) {
