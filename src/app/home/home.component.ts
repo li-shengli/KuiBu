@@ -114,7 +114,7 @@ export class HomeComponent implements OnInit {
               pagesCurrent: [taskInfo.pagesCurrent],
               startTime: [new Date(taskInfo.startTime).toLocaleString()],
               expectedDays: [taskInfo.expectedDays],
-              endTime: [new Date(taskInfo.endDate).toLocaleString()],
+              endTime: [this.getEndTime(taskInfo.endDate)],
               progress: this.caculateProgress(taskInfo.pagesCurrent, taskInfo.pagesIntotal),
               progressColor: this.progressTheme(taskInfo),
               chartData: new Chart({
@@ -164,6 +164,13 @@ export class HomeComponent implements OnInit {
                 ]
               })
             })
+  }
+
+  getEndTime(endDate: Date) {
+    if (endDate != null) {
+      console.log("endDate is " + endDate);
+      return new Date(endDate).toLocaleString();
+    }
   }
 
   caculateProgress (pagesCurrent: number, pagesIntotal: number) {
@@ -261,6 +268,7 @@ export class HomeComponent implements OnInit {
     console.log("Update the task: " + task.value.taskName);
     task.value.chartData = null;
     task.value.taskStatus = "Finished";
+    task.value.endDate = new Date();
     this.taskService.finishReadingTask(task.value).subscribe(
       data => {
           this.selectedIndex = 2;
@@ -345,9 +353,9 @@ export class HomeComponent implements OnInit {
     const dialogRef = this.dialog.open(TaskSharingComponent);
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result) {
-          this.finish(task);
-      }
+       if(result) {
+         this.share(taskIndex, `${result}`);
+       }
     });
   }
 
@@ -383,10 +391,14 @@ export class HomeComponent implements OnInit {
     
   }
 
-  share(taskIndex: number) {
+  share(taskIndex: number, to: string) {
+    console.log("Share to " + to);
     var node = document.getElementById('Book_'+taskIndex);
-    htmlToImage.toPng(node)
-      .then(function (dataUrl) {
+    var target = Wechat.Scene.SESSION;
+    if (to == "1") {
+      target = Wechat.Scene.TIMELINE;
+    }
+    htmlToImage.toPng(node).then(function (dataUrl) {
         var img = new Image();
         img.src = dataUrl;
         console.log('Image Url: '+ img);
@@ -399,7 +411,7 @@ export class HomeComponent implements OnInit {
                 image: dataUrl
               }
             },
-            scene: Wechat.Scene.SESSION   // share to wechat
+            scene: target
         }, function () {
             alert("Success");
         }, function (reason) {

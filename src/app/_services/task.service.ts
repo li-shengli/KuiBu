@@ -35,9 +35,8 @@ export class TaskService {
 
     finishReadingTask(taskInfo: TaskInfo) {
         console.log("finish a reading task.");
-        taskInfo.endDate = new Date();
         taskInfo.pagesCurrent = taskInfo.pagesIntotal;
-        
+
         return this.http.post(this.url_prefix + '/task/updateReadingTask', taskInfo);
     }
 }

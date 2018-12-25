@@ -61,6 +61,10 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                             ongoingTasks.push(task);
                         } else {
                             console.log ("retrive Finished tasks from localStorage...");
+                            if (task.endDate == null) {
+                                task.endDate = new Date();
+                                localStorage.setItem('tasks', JSON.stringify(tasks));
+                            }
                             doneTasks.push(task);
                         }
                     }
@@ -112,19 +116,20 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                     if (matchedTask.startTime == null && matchedTask.taskStatus == "Executing") {
                         matchedTask.startTime = matchedTask.createTime;
                     }
+                    if (task.endDate != null) {
+                        matchedTask.endDate = task.endDate;
+                    }
                     var d: number = 0;
                     if (matchedTask.startTime != null) {
                         d = (Date.now() - Date.parse(matchedTask.startTime.toString()))/(24*60*60*1000);
                         console.log ("How many days passed: "+parseInt(d.toString()));
                     }
-
-                    console.log ("How many pages done: "+matchedTask.pagesCurrent);
+                    matchedTask.lastUpdateDate = new Date();
 
                     if (pageChanged > 0) {
                         var taskHistory = this.getTaskHistory(matchedTask.taskId);
                         taskHistory.set(parseInt(d.toString())+1, matchedTask.pagesCurrent);
                         localStorage.setItem(matchedTask.taskId, JSON.stringify(MapArrayConverter.toArray(taskHistory)));
-                        console.log ("The updated task " + JSON.stringify(matchedTask));
                     }
 
                     localStorage.setItem('tasks', JSON.stringify(tasks));
