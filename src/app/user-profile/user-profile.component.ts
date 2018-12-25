@@ -3,6 +3,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AlertService, UserService } from '../_services';
 import { Router } from '@angular/router';
 
+declare var navigator: any;
+declare var Camera: any;
+
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
@@ -52,9 +55,28 @@ export class UserProfileComponent implements OnInit {
 
   // capture error callback
   captureError (error) {
-  //    navigator.notification.alert('Error code: ' + error.code, null, 'Capture Error');
+     navigator.notification.alert('Error code: ' + error.code, null, 'Capture Error');
   };
 
   // start image capture
-  //navigator.device.capture.captureImage(captureSuccess, captureError, {limit:2});
+  takePic() {
+    var srcType = Camera.PictureSourceType.CAMERA;
+    navigator.camera.getPicture(this.captureSuccess, this.captureError, this.setOptions(srcType));
+  }
+
+  setOptions(srcType) {
+    var options = {
+        // Some common settings are 20, 50, and 100
+        quality: 50,
+        destinationType: Camera.DestinationType.FILE_URI,
+        // In this app, dynamically set the picture source, Camera or photo gallery
+        sourceType: srcType,
+        encodingType: Camera.EncodingType.JPEG,
+        mediaType: Camera.MediaType.PICTURE,
+        allowEdit: true,
+        correctOrientation: true  //Corrects Android orientation quirks
+    }
+    return options;
+}
+  
 }

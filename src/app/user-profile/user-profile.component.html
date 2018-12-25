@@ -1,6 +1,7 @@
 <form [formGroup]="userDetailsForm" (ngSubmit)="onSubmit()">
   <div class="user-details-container">
     <input hidden formControlName="id">
+    <button mat-raised-button (click)="takePic()">Done</button>
     <mat-form-field>
       <input matInput formControlName="nickName" placeholder="User Nick Name">
     </mat-form-field>
