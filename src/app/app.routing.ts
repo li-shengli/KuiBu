@@ -15,7 +15,7 @@ const appRoutes: Routes = [
     { path: 'user_profile', component: UserProfileComponent, canActivate: [AuthGuard] },
     { path: 'register', component: RegisterComponent },
     { path: 'new_task', component: NewTaskComponent , canActivate: [AuthGuard] },
-
+    
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 ];

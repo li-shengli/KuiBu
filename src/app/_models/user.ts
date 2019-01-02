@@ -5,4 +5,5 @@
     nickName: string;
     motto: string;
     profileUrl: string;
+    photo: string;
 }

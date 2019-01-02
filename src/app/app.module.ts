@@ -40,6 +40,7 @@ import { DialogConfirmDialog } from './delete-confirm/delete-confirm.component';
 import { DoneConfirmComponent } from './done-confirm/done-confirm.component';
 import { MatMenuModule} from '@angular/material/menu';
 import { TaskSharingComponent } from './task-sharing/task-sharing.component';
+import { QrcodeDisplayComponent } from './qrcode-display/qrcode-display.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { TaskSharingComponent } from './task-sharing/task-sharing.component';
     DataSyncComponent,
     DialogConfirmDialog,
     DoneConfirmComponent,
-    TaskSharingComponent
+    TaskSharingComponent,
+    QrcodeDisplayComponent
   ],
   imports: [
     BrowserModule,
@@ -86,7 +88,8 @@ import { TaskSharingComponent } from './task-sharing/task-sharing.component';
     ConnectUsComponent,
     DialogConfirmDialog,
     DoneConfirmComponent,
-    TaskSharingComponent
+    TaskSharingComponent,
+    QrcodeDisplayComponent
   ],
   providers: [
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: true}},

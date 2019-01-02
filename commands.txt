@@ -1,3 +1,13 @@
 npm install wechat-jssdk --save  // install wechat-jssdk
 npm install sha1
 npm install --save html-to-image
+
+cordova plugin add cordova-plugin-qrscanner
+cordova plugin add cordova-plugin-barcodescanner
+
+
+ng generate component xxx
+
+--user-data-dir="C:/Chrome dev session" --disable-web-security
+
+"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" --args --disable-web-security --user-data-dir

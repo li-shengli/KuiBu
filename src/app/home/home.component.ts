@@ -32,6 +32,7 @@ var htmlToImage = require('html-to-image');
 export class HomeComponent implements OnInit {
   title = 'KuiBu';
   currentUser = JSON.parse(localStorage.getItem('currentUser'));
+  myPhoto = "assets/img/125495334_31n.jpg";
   selectedIndex: number = 1;
   submitTaskForms: FormGroup[] = [];
   ongoingTaskForms: FormGroup[] = [];
@@ -63,6 +64,9 @@ export class HomeComponent implements OnInit {
     }
 
   ngOnInit() {
+    if (this.currentUser.photo != null) {
+      this.myPhoto = this.currentUser.photo
+    }
     this.submitTaskForms = [];
     this.ongoingTaskForms = [];
     this.taskService.getAllTasks().subscribe(
