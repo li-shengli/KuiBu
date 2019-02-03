@@ -4,6 +4,9 @@ npm install --save html-to-image
 
 cordova plugin add cordova-plugin-qrscanner
 cordova plugin add cordova-plugin-barcodescanner
+cordova plugin add https://github.com/MenelicSoftware/cordova-plugin-qrcodejs
+
+cordova plugin rm cordova-plugin-barcodescanner
 
 
 ng generate component xxx
@@ -11,3 +14,11 @@ ng generate component xxx
 --user-data-dir="C:/Chrome dev session" --disable-web-security
 
 "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" --args --disable-web-security --user-data-dir
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
++++++++++++ How to install tablestore sdk ++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+npm install tablestore
+npm install -g bower
+go to KuiBu\node_modules\tablestore, create .bowerrc to set proxy.
+in KuiBu\node_modules\tablestore, run "bower install"

@@ -1,5 +1,16 @@
-<h2>TODO</h2>
-<p>
-  Import/Export Data from/to remote server.
-</p>
+<form [formGroup]="userDetailsForm">
+  <div class="user-details-container">
+    <input hidden formControlName="id">
+    <mat-form-field>
+      <input matInput formControlName="username" readonly="true"  placeholder="User Logon Name">
+    </mat-form-field>
+    <mat-form-field>
+      <input matInput formControlName="nickName" readonly="true"  placeholder="User Nick Name">
+    </mat-form-field>
+  </div>
+  <div class="button-row">
+      <button mat-raised-button (click)="exportData()">Export</button>
+      <button mat-raised-button [routerLink]="['']">Back to Home</button>
+  </div>
+</form>
 <a  [routerLink]="['']">Back to Home</a>

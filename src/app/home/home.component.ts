@@ -9,7 +9,7 @@ import { MapArrayConverter } from '../_helpers/MapArrayConverter';
 import { DomSanitizer } from '@angular/platform-browser';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { MatOptionSelectionChange } from '@angular/material/core'
+import { MatOptionSelectionChange } from '@angular/material/core';
 import { TaskService, AlertService } from '../_services';
 
 import { ConnectUsComponent } from '../connect-us/connect-us.component';

@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
-import { AppComponent }  from './app.component';
+import { AppComponent } from './app.component';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatTabsModule} from '@angular/material/tabs';
@@ -20,16 +20,16 @@ import { NewTaskComponent } from './new-task/new-task.component';
 import {MatCardModule} from '@angular/material/card';
 import {ChartModule} from 'angular-highcharts';
 
-import { routing }        from './app.routing';
+import { routing } from './app.routing';
 import { AlertComponent } from './_directives';
 import { AuthGuard } from './_guards';
-import { JwtInterceptor, ErrorInterceptor } from './_helpers';
+import { JwtInterceptor, ErrorInterceptor, TablestoreService } from './_helpers';
 import { AlertService, AuthenticationService, UserService, TaskService, WechatShareService } from './_services';
 import { HomeComponent } from './home';
 import { LoginComponent } from './login';
 import { RegisterComponent } from './register';
 import { fakeBackendProvider } from './_helpers';
-import { ReactiveFormsModule, FormsModule }    from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ConnectUsComponent } from './connect-us/connect-us.component';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -98,6 +98,7 @@ import { QrcodeDisplayComponent } from './qrcode-display/qrcode-display.componen
     AuthenticationService,
     UserService,
     TaskService,
+    TablestoreService,
     WechatShareService,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
