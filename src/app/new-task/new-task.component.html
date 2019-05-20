@@ -2,22 +2,36 @@
 <form [formGroup]="newTaskForm">
   <div class="task-details-container">
     <mat-form-field>
-      <mat-select placeholder="Task Type" formControlName="taskType" itemtype="number">
+      <mat-select placeholder="Task Type" formControlName="taskType">
         <mat-option value="Reading">Reading</mat-option>
-        <mat-option value="Sports">Sports</mat-option>
+        <mat-option value="Course">Course</mat-option>
       </mat-select>
     </mat-form-field>
-    <mat-form-field>
+
+    <mat-form-field *ngIf="newTaskForm.value.taskType == 'Reading'">
       <input matInput formControlName="taskName" placeholder="Book Name">
     </mat-form-field>
-    <mat-form-field>
+    <mat-form-field *ngIf="newTaskForm.value.taskType == 'Reading'">
       <input matInput type="number" formControlName="pagesCurrent" placeholder="Pages already done">
     </mat-form-field>
-    <mat-form-field>
+    <mat-form-field *ngIf="newTaskForm.value.taskType == 'Reading'">
       <input matInput type="number" formControlName="pagesIntotal" placeholder="Total pages of the book">
     </mat-form-field>
-    <mat-form-field>
+    <mat-form-field *ngIf="newTaskForm.value.taskType == 'Reading'">
       <input matInput type="number" formControlName="expectedDays" placeholder="How many days needed to finish this book?">
+    </mat-form-field>
+
+    <mat-form-field *ngIf="newTaskForm.value.taskType == 'Course'">
+      <input matInput formControlName="taskName" placeholder="Course Name">
+    </mat-form-field>
+    <mat-form-field *ngIf="newTaskForm.value.taskType == 'Course'">
+      <input matInput type="number" formControlName="pagesCurrent" placeholder="Lectures already done">
+    </mat-form-field>
+    <mat-form-field *ngIf="newTaskForm.value.taskType == 'Course'">
+      <input matInput type="number" formControlName="pagesIntotal" placeholder="Total lectures of the course">
+    </mat-form-field>
+    <mat-form-field *ngIf="newTaskForm.value.taskType == 'Course'">
+      <input matInput type="number" formControlName="expectedDays" placeholder="How many days needed to finish this course?">
     </mat-form-field>
   </div>
   <div class="button-row">

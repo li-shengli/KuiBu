@@ -43,21 +43,6 @@ import { TaskSharingComponent } from './task-sharing/task-sharing.component';
 import { QrcodeDisplayComponent } from './qrcode-display/qrcode-display.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    NewTaskComponent,
-    AlertComponent,
-    HomeComponent,
-    LoginComponent,
-    RegisterComponent,
-    ConnectUsComponent,
-    UserProfileComponent,
-    DataSyncComponent,
-    DialogConfirmDialog,
-    DoneConfirmComponent,
-    TaskSharingComponent,
-    QrcodeDisplayComponent
-  ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -82,6 +67,21 @@ import { QrcodeDisplayComponent } from './qrcode-display/qrcode-display.componen
     MatListModule,
     MatMenuModule,
     routing
+  ],
+  declarations: [
+    AppComponent,
+    NewTaskComponent,
+    AlertComponent,
+    HomeComponent,
+    LoginComponent,
+    RegisterComponent,
+    ConnectUsComponent,
+    UserProfileComponent,
+    DataSyncComponent,
+    DialogConfirmDialog,
+    DoneConfirmComponent,
+    TaskSharingComponent,
+    QrcodeDisplayComponent
   ],
   entryComponents: [
     NewTaskComponent,

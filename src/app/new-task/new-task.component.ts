@@ -2,6 +2,7 @@ import { Component, OnInit, Inject} from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { FormControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 import { AlertService, TaskService } from '../_services';
 
@@ -15,7 +16,6 @@ export class NewTaskComponent implements OnInit {
   loading = false;
   submitted = false;
 
-  
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
@@ -25,8 +25,8 @@ export class NewTaskComponent implements OnInit {
 
   ngOnInit() {
      this.newTaskForm = this.formBuilder.group({
-            taskType: ["Reading", Validators.required],
-            taskName: ["", Validators.required],
+            taskType: ['Reading', Validators.required],
+            taskName: ['', Validators.required],
             expectedDays: [Validators.required],
             pagesCurrent: [Validators.required],
             pagesIntotal: [Validators.required]

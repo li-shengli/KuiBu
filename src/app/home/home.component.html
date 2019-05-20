@@ -56,15 +56,26 @@
                             </mat-expansion-panel-header>
                             <div class="task-details-container">
                                 <input hidden formControlName="taskId">
-                                <mat-form-field class="input-full-width">
+                                <mat-form-field class="input-full-width" *ngIf="task.value.taskType == 'Reading'">
                                     <input matInput formControlName="taskName" placeholder="Book Name">
                                 </mat-form-field>
-                                <mat-form-field class="input-full-width">
+                                <mat-form-field class="input-full-width" *ngIf="task.value.taskType == 'Reading'">
                                     <input matInput type="number" formControlName="pagesCurrent" placeholder="Current Page">
                                 </mat-form-field>
-                                <mat-form-field class="input-full-width">
+                                <mat-form-field class="input-full-width" *ngIf="task.value.taskType == 'Reading'">
                                     <input matInput type="number" formControlName="pagesIntotal" placeholder="Total Pages">
                                 </mat-form-field>
+
+                                <mat-form-field class="input-full-width" *ngIf="task.value.taskType == 'Course'">
+                                    <input matInput formControlName="taskName" placeholder="Course Name">
+                                </mat-form-field>
+                                <mat-form-field class="input-full-width" *ngIf="task.value.taskType == 'Course'">
+                                    <input matInput type="number" formControlName="pagesCurrent" placeholder="Current Lecture">
+                                </mat-form-field>
+                                <mat-form-field class="input-full-width" *ngIf="task.value.taskType == 'Course'">
+                                    <input matInput type="number" formControlName="pagesIntotal" placeholder="Total Lectures">
+                                </mat-form-field>
+
                                 <mat-form-field class="input-full-width">
                                     <input matInput type="number" formControlName="expectedDays" placeholder="Expected Days">
                                 </mat-form-field>
@@ -101,15 +112,26 @@
                                 <input hidden formControlName="taskId">
                                 <input hidden type="number" formControlName="taskStatus">
                                 <p>
-                                    <mat-form-field class="inpiut-half-left-width">
+                                    <mat-form-field class="inpiut-half-left-width" *ngIf="task.value.taskType == 'Reading'">
                                         <mat-select placeholder="Current Page" formControlName="pagesCurrent" (selectionChange)="pageChange($event, taskIndex)">
                                             <mat-option *ngFor="let page of [].constructor(task.value.pagesIntotal); index as i;" [value]="i+1">
                                                 {{i+1}}
                                             </mat-option>
                                         </mat-select>
                                     </mat-form-field>
-                                    <mat-form-field class="inpiut-half-right-width">
+                                    <mat-form-field class="inpiut-half-right-width" *ngIf="task.value.taskType == 'Reading'">
                                         <input matInput type="number" formControlName="pagesIntotal" readonly="true" placeholder="Total Pages">
+                                    </mat-form-field>
+
+                                    <mat-form-field class="inpiut-half-left-width" *ngIf="task.value.taskType == 'Course'">
+                                        <mat-select placeholder="Current Lecture" formControlName="pagesCurrent" (selectionChange)="pageChange($event, taskIndex)">
+                                            <mat-option *ngFor="let page of [].constructor(task.value.pagesIntotal); index as i;" [value]="i+1">
+                                                {{i+1}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field class="inpiut-half-right-width" *ngIf="task.value.taskType == 'Course'">
+                                        <input matInput type="number" formControlName="pagesIntotal" readonly="true" placeholder="Total Lectures">
                                     </mat-form-field>
                                 </p>
                                 <p>
@@ -148,8 +170,11 @@
                             <div class="task-details-container">
                                 <input hidden formControlName="taskId">
                                 <input hidden type="number" formControlName="taskStatus">
-                                <mat-form-field class="input-full-width">
+                                <mat-form-field class="input-full-width" *ngIf="task.value.taskType == 'Reading'">
                                     <input matInput type="number" formControlName="pagesIntotal" readonly="true" placeholder="Total Pages">
+                                </mat-form-field>
+                                <mat-form-field class="input-full-width" *ngIf="task.value.taskType == 'Course'">
+                                    <input matInput type="number" formControlName="pagesIntotal" readonly="true" placeholder="Total Lectures">
                                 </mat-form-field>
                                 <mat-form-field class="input-full-width">
                                     <input matInput formControlName="startTime" readonly="true" placeholder="Start Time">
