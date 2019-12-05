@@ -9,6 +9,7 @@ export class TaskInfo {
     createTime: Date;
     startTime: Date;
     endDate: Date;
+    timeline: Date[];
     lastUpdateDate: Date;
 
     pagesIntotal: number;

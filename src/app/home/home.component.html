@@ -145,6 +145,7 @@
                                 <div [chart]="task.value.chartData"></div>
                                 <div class="button-row">
                                     <button mat-raised-button (click)="doneDialog(task, taskIndex, 'on-going')">Done</button>
+                                    <button mat-raised-button (click)="suspend(task)">Pause</button>
                                     <button mat-raised-button (click)="deleteDialog(task, taskIndex, 'on-going')">Delete</button>
                                 </div>
                             </div>
@@ -194,6 +195,68 @@
                         </mat-expansion-panel>
                     </form>
                     </div>
+                    </div>
+                </mat-accordion>
+            </mat-tab>
+            <mat-tab label="Pending">
+                <mat-accordion>
+                    <div *ngFor="let task of pendingTaskForms; index as taskIndex;">
+                    <form [formGroup]="task" >
+                        <mat-expansion-panel>
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                    {{task.value.taskType}}
+                                </mat-panel-title>
+                                <mat-panel-description>
+                                    {{task.value.taskName}}
+                                </mat-panel-description>
+                            </mat-expansion-panel-header>
+                            <div class="task-details-container">
+                                <div class="my-progress">
+                                    <div [ngStyle]="{'width': task.value.progress, 'background-color': task.value.progressColor}" class="my-progress-bar"></div>
+                                </div>
+                                <div style="margin-bottom: 10px"></div>
+                                <input hidden formControlName="taskId">
+                                <input hidden type="number" formControlName="taskStatus">
+                                <p>
+                                    <mat-form-field class="inpiut-half-left-width" *ngIf="task.value.taskType == 'Reading'">
+                                        <mat-select placeholder="Current Page" formControlName="pagesCurrent" (selectionChange)="pageChange($event, taskIndex)">
+                                            <mat-option *ngFor="let page of [].constructor(task.value.pagesIntotal); index as i;" [value]="i+1">
+                                                {{i+1}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field class="inpiut-half-right-width" *ngIf="task.value.taskType == 'Reading'">
+                                        <input matInput type="number" formControlName="pagesIntotal" readonly="true" placeholder="Total Pages">
+                                    </mat-form-field>
+
+                                    <mat-form-field class="inpiut-half-left-width" *ngIf="task.value.taskType == 'Course'">
+                                        <mat-select placeholder="Current Lecture" formControlName="pagesCurrent" (selectionChange)="pageChange($event, taskIndex)">
+                                            <mat-option *ngFor="let page of [].constructor(task.value.pagesIntotal); index as i;" [value]="i+1">
+                                                {{i+1}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field class="inpiut-half-right-width" *ngIf="task.value.taskType == 'Course'">
+                                        <input matInput type="number" formControlName="pagesIntotal" readonly="true" placeholder="Total Lectures">
+                                    </mat-form-field>
+                                </p>
+                                <p>
+                                    <mat-form-field class="inpiut-half-left-width">
+                                        <input matInput formControlName="startTime" readonly="true" placeholder="Start Time">
+                                    </mat-form-field>
+                                    <mat-form-field class="inpiut-half-right-width">
+                                        <input matInput formControlName="expectedDays" readonly="true" placeholder="Expected Duration">
+                                    </mat-form-field>
+                                </p>
+                                <div [chart]="task.value.chartData"></div>
+                                <div class="button-row">
+                                    <button mat-raised-button (click)="doneDialog(task, taskIndex, 'on-going')">Done</button>
+                                    <button mat-raised-button (click)="deleteDialog(task, taskIndex, 'on-going')">Delete</button>
+                                </div>
+                            </div>
+                        </mat-expansion-panel>
+                    </form>
                     </div>
                 </mat-accordion>
             </mat-tab>

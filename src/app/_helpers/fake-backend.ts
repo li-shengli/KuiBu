@@ -12,27 +12,27 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         // array in local storage for registered users
-        let users: User[] = JSON.parse(localStorage.getItem('users')) || [];
-        let tasks: TaskInfo[] = JSON.parse(localStorage.getItem('tasks')) || [];
+        const users: User[] = JSON.parse(localStorage.getItem('users')) || [];
+        const tasks: TaskInfo[] = JSON.parse(localStorage.getItem('tasks')) || [];
 
         // wrap in delayed observable to simulate server api call
         return of(null).pipe(mergeMap(() => {
-           
+
             // add task
             if (request.url.endsWith('/task/add') && request.method === 'POST') {
-                let newTask = request.body;
+                const newTask = request.body;
 
                 // save new task
                 newTask.taskId = Date.now();
                 newTask.createTime = new Date();
-                newTask.taskStatus = "Submitted";
+                newTask.taskStatus = 'Submitted';
                 newTask.history = new Map();
                 newTask.history.set(0, newTask.pagesCurrent);
                 tasks.push(newTask);
                 localStorage.setItem('tasks', JSON.stringify(tasks));
-                
+
                 localStorage.setItem(newTask.taskId, JSON.stringify(MapArrayConverter.toArray(newTask.history)));
-                console.log ("taskHistory: " + JSON.stringify(MapArrayConverter.toArray(newTask.history)));
+                console.log ('taskHistory: ' + JSON.stringify(MapArrayConverter.toArray(newTask.history)));
 
                 // respond 200 OK
                 return of(new HttpResponse({ status: 200 }));
@@ -40,27 +40,31 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
             // get all task by username
             if (request.url.match(/\/task\/all\/.+$/) && request.method === 'GET') {
-                console.log ("retrive tasks from localStorage...");
+                console.log ('retrive tasks from localStorage...');
 
-                let submittedTasks: TaskInfo[] = [];
-                let ongoingTasks: TaskInfo[] = [];
-                let doneTasks: TaskInfo[] = [];
-                
+                const submittedTasks: TaskInfo[] = [];
+                const ongoingTasks: TaskInfo[] = [];
+                const doneTasks: TaskInfo[] = [];
+                const pendingTasks: TaskInfo[] = [];
+
                 tasks.forEach(task => {
-                    console.log ("retrive Submitted tasks from localStorage... and oldHistory ");
+                    console.log ('retrive Submitted tasks from localStorage... and oldHistory ');
 
-                    let username = localStorage.getItem('currentUserId');
+                    const username = localStorage.getItem('currentUserId');
                     if (task.username == username) {
 
                         task.history = this.getTaskHistory(task.taskId);
 
-                        if (task.taskStatus === "Submitted") {
+                        if (task.taskStatus === 'Submitted') {
                             submittedTasks.push(task);
-                        } else if  (task.taskStatus === "Executing") {
-                            console.log ("retrive Executing tasks from localStorage...");
+                        } else if  (task.taskStatus === 'Executing') {
+                            console.log ('retrive Executing tasks from localStorage...');
                             ongoingTasks.push(task);
+                        } else if ((task.taskStatus === 'Pending') {
+                            console.log ('retrive Pending tasks from localStorage...');
+                            pendingTasks.push(task);
                         } else {
-                            console.log ("retrive Finished tasks from localStorage...");
+                            console.log ('retrive Finished tasks from localStorage...');
                             if (task.endDate == null) {
                                 task.endDate = new Date();
                                 localStorage.setItem('tasks', JSON.stringify(tasks));
@@ -71,29 +75,30 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
                 });
 
-                let allTasks = {
-                    "Submitted": submittedTasks,
-                    "Executing": ongoingTasks,
-                    "Finished": doneTasks
-                }
+                const allTasks = {
+                    'Submitted': submittedTasks,
+                    'Executing': ongoingTasks,
+                    'Finished': doneTasks,
+                    'Pending': pendingTasks
+                };
 
-                console.log ("retrive all tasks from localStorage: " + allTasks);
+                console.log ('retrive all tasks from localStorage: ' + allTasks);
 
                 return of(new HttpResponse({ status: 200, body: allTasks }));
             }
 
             // update task
             if (request.url.endsWith('/task/updateReadingTask') && request.method === 'POST') {
-                let task = request.body;
+                const task = request.body;
 
-                console.log ("update tasks from localStorage..." + JSON.stringify(task));
+                console.log ('update tasks from localStorage...' + JSON.stringify(task));
 
-                let matchedTasks = tasks.filter(existTask => { return existTask.taskId == task.taskId; });
-                let matchedTask = matchedTasks.length ? matchedTasks[0] : null;
+                const matchedTasks = tasks.filter(existTask => { return existTask.taskId == task.taskId; });
+                const matchedTask = matchedTasks.length ? matchedTasks[0] : null;
                 if (matchedTask != null) {
-                    console.log ("One task was found from localStorage..." + JSON.stringify(matchedTask));
+                    console.log ('One task was found from localStorage...' + JSON.stringify(matchedTask));
 
-                    var pageChanged = task.pagesCurrent - matchedTask.pagesCurrent
+                    var pageChanged = task.pagesCurrent - matchedTask.pagesCurrent;
 
                     if (task.taskName != null) {
                         matchedTask.taskName = task.taskName;
@@ -113,7 +118,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                     if (matchedTask.startTime == null) {
                         matchedTask.startTime = task.startTime;
                     } 
-                    if (matchedTask.startTime == null && matchedTask.taskStatus == "Executing") {
+                    if (matchedTask.startTime == null && matchedTask.taskStatus == 'Executing') {
                         matchedTask.startTime = matchedTask.createTime;
                     }
                     if (task.endDate != null) {
@@ -122,7 +127,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                     var d: number = 0;
                     if (matchedTask.startTime != null) {
                         d = (Date.now() - Date.parse(matchedTask.startTime.toString()))/(24*60*60*1000);
-                        console.log ("How many days passed: "+parseInt(d.toString()));
+                        console.log ('How many days passed: '+parseInt(d.toString()));
                     }
                     matchedTask.lastUpdateDate = new Date();
 
@@ -136,10 +141,37 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
                     return of(new HttpResponse({ status: 200 }));
                 } else {
-                    console.log ("No task was found from localStorage...");
+                    console.log ('No task was found from localStorage...');
                     return throwError({ error: { message: 'No Task Found!' } });
                 }
-                
+
+            }
+
+
+             // suspend task
+             if (request.url.endsWith('/task/suspendReadingTask') && request.method === 'POST') {
+                const task = request.body;
+
+                const matchedTasks = tasks.filter(existTask => { return existTask.taskId == task.taskId; });
+                const matchedTask = matchedTasks.length ? matchedTasks[0] : null;
+                if (matchedTask != null) {
+                    console.log ('One task was found from localStorage...' + JSON.stringify(matchedTask));
+
+                    if (task.taskStatus != null) {
+                        matchedTask.taskStatus = task.taskStatus;
+                    }
+                    if (matchedTask.timeline == null) {
+                        matchedTask.timeline = [];
+                    }
+                    matchedTask.timeline.push(new Date());
+
+                    localStorage.setItem('tasks', JSON.stringify(tasks));
+
+                    return of(new HttpResponse({ status: 200 }));
+                } else {
+                    console.log ('No task was found from localStorage...');
+                    return throwError({ error: { message: 'No Task Found!' } });
+                }
             }
 
             // delete task
@@ -158,7 +190,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                     }
                 }
 
-                console.log ("Task Deleted: " + id);
+                console.log ('Task Deleted: ' + id);
                 // respond 200 OK
                 return of(new HttpResponse({ status: 200 }));
             }
@@ -219,14 +251,14 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
             // register user
             if (request.url.endsWith('/user/register') && request.method === 'POST') {
-                console.log ("register user into localStorage...");
+                console.log ('register user into localStorage...');
                 // get new user object from post body
                 let newUser = request.body;
 
                 // validation
                 let duplicateUser = users.filter(user => { return user.username === newUser.username; }).length;
                 if (duplicateUser) {
-                    return throwError({ error: { message: 'Username "' + newUser.username + '" is already taken' } });
+                    return throwError({ error: { message: 'Username ' + newUser.username + 'is already taken' } });
                 }
 
                 // save new user
@@ -240,7 +272,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
             // update user
             if (request.url.endsWith('/user/update') && request.method === 'POST') {
-                console.log ("update user into localStorage...");
+                console.log ('update user into localStorage...');
                 // get new user object from post body
                 let newUser = request.body;
 
@@ -295,11 +327,11 @@ export class FakeBackendInterceptor implements HttpInterceptor {
     }
 
     getTaskHistory(taskId: string) {
-        console.log("Get History for task: " + taskId);
+        console.log('Get History for task: ' + taskId);
         var oldHistory = localStorage.getItem(taskId);
         var history = MapArrayConverter.toMap(JSON.parse(oldHistory));
 
-        console.log("Task History: " + history);
+        console.log('Task History: ' + history);
         return history;
     }
 }

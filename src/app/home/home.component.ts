@@ -32,13 +32,15 @@ var htmlToImage = require('html-to-image');
 export class HomeComponent implements OnInit {
   title = 'KuiBu';
   currentUser = JSON.parse(localStorage.getItem('currentUser'));
-  myPhoto = "assets/img/125495334_31n.jpg";
-  selectedIndex: number = 1;
+  myPhoto = 'assets/img/125495334_31n.jpg';
+  selectedIndex = 1;
   submitTaskForms: FormGroup[] = [];
+  pendingTaskForms: FormGroup[] = [];
   ongoingTaskForms: FormGroup[] = [];
   doneTaskForms: FormGroup[] = [];
   submittedTasks: TaskInfo[] = [];
   ongoingTasks: TaskInfo[] = [];
+  pendingTasks: TaskInfo[] = [];
   doneTasks: TaskInfo[] = [];
   @ViewChild('sidenav') sidenav: MatSidenav;
   @ViewChild(MatMenuTrigger) trigger: MatMenuTrigger;
@@ -65,19 +67,20 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     if (this.currentUser.photo != null) {
-      this.myPhoto = this.currentUser.photo
+      this.myPhoto = this.currentUser.photo;
     }
     this.submitTaskForms = [];
     this.ongoingTaskForms = [];
     this.taskService.getAllTasks().subscribe(
       data => {
-          console.log("retrieve tasks..." + JSON.stringify(data));
-          this.submittedTasks = data["Submitted"];
-          this.ongoingTasks = data["Executing"];
-          this.doneTasks = data["Finished"];
+          console.log('retrieve tasks...' + JSON.stringify(data));
+          this.submittedTasks = data['Submitted'];
+          this.ongoingTasks = data['Executing'];
+          this.doneTasks = data['Finished'];
+          this.pendingTasks = data['Pending'];
 
           for (let i = 0; i < this.submittedTasks.length; i++) {
-            console.log('task history 3: '+ Array.from(this.submittedTasks[i].history));
+            console.log('task history 3: ' + Array.from(this.submittedTasks[i].history));
 
             this.submitTaskForms.push(
               this.formBuilder.group({
@@ -91,14 +94,20 @@ export class HomeComponent implements OnInit {
             );
           }
 
-          for (let i=0; i<this.ongoingTasks.length; i++) {
-            console.log("Show task : " + this.ongoingTasks[i].taskName);
+          for (let i = 0; i < this.ongoingTasks.length; i++) {
+            console.log('Show task : ' + this.ongoingTasks[i].taskName);
 
             this.ongoingTaskForms[i] = this.taskForGroup(this.ongoingTasks[i]);
           }
 
-          for (let i=0; i<this.doneTasks.length; i++) {
-            console.log("Show task : " + this.doneTasks[i].taskName);
+          for (let i = 0; i < this.pendingTasks.length; i++) {
+            console.log('Show task : ' + this.pendingTasks[i].taskName);
+
+            this.pendingTaskForms[i] = this.taskForGroup(this.pendingTasks[i]);
+          }
+
+          for (let i = 0; i < this.doneTasks.length; i++) {
+            console.log('Show task : ' + this.doneTasks[i].taskName);
 
             this.doneTaskForms[i] = this.taskForGroup(this.doneTasks[i]);
           }
@@ -136,9 +145,8 @@ export class HomeComponent implements OnInit {
                   title: {
                     text: ''
                   },
-                  tickInterval: taskInfo.pagesIntotal/10,
+                  tickInterval: taskInfo.pagesIntotal / 10,
                   ceiling: taskInfo.pagesIntotal,
-                  
                 },
                 xAxis: {
                   title: {
@@ -162,7 +170,7 @@ export class HomeComponent implements OnInit {
                 },
                 series: [
                   {
-                    name:'',
+                    name: '',
                     data: this.arrayConvert(taskInfo.history)
                   }
                 ]
@@ -172,24 +180,24 @@ export class HomeComponent implements OnInit {
 
   getEndTime(endDate: Date) {
     if (endDate != null) {
-      console.log("endDate is " + endDate);
+      console.log('endDate is ' + endDate);
       return new Date(endDate).toLocaleString();
     }
   }
 
   caculateProgress (pagesCurrent: number, pagesIntotal: number) {
-    var progress = 100*pagesCurrent/pagesIntotal +'%';
+    var progress = 100 * pagesCurrent / pagesIntotal + '%';
 
-    console.log("progress is " + progress);
+    console.log('progress is ' + progress);
 
     return progress;
   }
   progressTheme(taskInfo: TaskInfo) {
-    var backgroundColor = "blue";
+    var backgroundColor = 'blue';
     if (taskInfo.startTime == null) return backgroundColor;
 
     var buffer: number = 0.05;
-    var d: number = (Date.now() - Date.parse(taskInfo.startTime.toString()))/(24*60*60*1000);
+    var d: number = (Date.now() - Date.parse(taskInfo.startTime.toString())) / (24 * 60 * 60 * 1000);
     var daysPassed = parseInt(d.toString());
     var pageDoneBeforeStart = taskInfo.history.get(0);
 
@@ -197,9 +205,9 @@ export class HomeComponent implements OnInit {
     var expectedProgress = (pageDoneBeforeStart / taskInfo.pagesIntotal) + (taskInfo.pagesIntotal - pageDoneBeforeStart) / taskInfo.pagesIntotal / taskInfo.expectedDays * daysPassed;
 
     if (actualProgress - expectedProgress > buffer) {
-      backgroundColor = "green";
+      backgroundColor = 'green';
     } else if (expectedProgress - actualProgress > buffer) {
-      backgroundColor = "red";
+      backgroundColor = 'red';
     }
     
     return backgroundColor;
@@ -239,7 +247,7 @@ export class HomeComponent implements OnInit {
   }
 
   update(task: FormGroup) { 
-    console.log("Update the task: " + task.value.taskName); 
+    console.log('Update the task: ' + task.value.taskName); 
     task.value.chartData = null; 
     this.taskService.updateReadingTask(task.value).subscribe( 
       data => { 
@@ -247,15 +255,16 @@ export class HomeComponent implements OnInit {
           this.router.navigate(['/home']); 
       }, 
       error => { 
-        console.log('something is wrong: '+ error.message); 
+        console.log('something is wrong: ' + error.message); 
         this.alertService.error(error.message); 
       }); 
   } 
 
   saveAndStart(task: FormGroup) {
-    console.log("Update the task and start it: " + task.value.taskName);
-    task.value.taskStatus = "Executing";
+    console.log('Update the task and start it: ' + task.value.taskName);
+    task.value.taskStatus = 'Executing';
     task.value.startTime = new Date();
+
     this.taskService.updateReadingTask(task.value).subscribe(
       data => {
         this.selectedIndex = 1;
@@ -263,15 +272,31 @@ export class HomeComponent implements OnInit {
         console.log('everything goes well. go to home page');
       },
       error => {
-        console.log('something is wrong: '+ error.message);
+        console.log('something is wrong: ' + error.message);
+        this.alertService.error(error.message);
+      });
+  }
+
+  suspend(task: FormGroup) {
+    console.log('Update the task and suspend it: ' + task.value.taskName);
+    task.value.taskStatus = 'Pending';
+
+    this.taskService.suspendReadingTask(task.value).subscribe(
+      data => {
+        this.selectedIndex = 1;
+        this.reloadCurrentPage();
+        console.log('everything goes well. go to home page');
+      },
+      error => {
+        console.log('something is wrong...: ' + error);
         this.alertService.error(error.message);
       });
   }
 
   finish(task: FormGroup) {
-    console.log("Update the task: " + task.value.taskName);
+    console.log('Update the task: ' + task.value.taskName);
     task.value.chartData = null;
-    task.value.taskStatus = "Finished";
+    task.value.taskStatus = 'Finished';
     task.value.endDate = new Date();
     this.taskService.finishReadingTask(task.value).subscribe(
       data => {
@@ -280,21 +305,21 @@ export class HomeComponent implements OnInit {
           console.log('everything goes well. go to home page.')
       },
       error => {
-        console.log('something is wrong: '+ error.message);
+        console.log('something is wrong: ' + error.message);
         this.alertService.error(error.message);
       });
   }
 
   delete(task: FormGroup, taskIndex: number, taskType: string) {
-    console.log("Delete the task: " + task.value.taskName);
+    console.log('Delete the task: ' + task.value.taskName);
     if ('submitted' == taskType) {
-      console.log("Delete a Submitted taskIndex: " + taskIndex);
+      console.log('Delete a Submitted taskIndex: ' + taskIndex);
       this.submitTaskForms.slice(taskIndex, 1);
     } else if ('on-going' == taskType) {
-      console.log("Delete a On-going taskIndex: " + taskIndex);
+      console.log('Delete a On-going taskIndex: ' + taskIndex);
       this.ongoingTaskForms.slice(taskIndex, 1);
     } else {
-      console.log("Delete a Finished taskIndex: " + taskIndex);
+      console.log('Delete a Finished taskIndex: ' + taskIndex);
       this.doneTaskForms.slice(taskIndex, 1);
     }
     this.taskService.deleteReadingTask(task.value).subscribe(
@@ -303,7 +328,7 @@ export class HomeComponent implements OnInit {
           console.log('everything goes well. go to home page.')
       },
       error => {
-        console.log('something is wrong: '+ error.message);
+        console.log('something is wrong: ' + error.message);
         this.alertService.error(error.message);
       });
       
@@ -316,7 +341,7 @@ export class HomeComponent implements OnInit {
 
     dialogRef.afterClosed().pipe(first()).subscribe(result => {
       if (result) {
-        console.log('Dialog result: '+ `${result.value}`);
+        console.log('Dialog result: ' + `${result.value}`);
         this.taskService.createTask(result.value).subscribe(
           data => {
               this.selectedIndex = 0;
@@ -324,9 +349,9 @@ export class HomeComponent implements OnInit {
               console.log('everything goes well. go to home page.')
           },
           error => {
-            console.log('something is wrong: '+ error.message);
+            console.log('something is wrong: ' + error.message);
             this.alertService.error(error.message);
-          });;
+          }); ;
       } else {
         console.log('dialog closed, no need to refresh the task list.');
       }
@@ -337,7 +362,7 @@ export class HomeComponent implements OnInit {
     const dialogRef = this.dialog.open(DialogConfirmDialog);
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result) {
+      if (result) {
           this.delete(task, taskIndex, taskType);
       }
     });
@@ -347,7 +372,7 @@ export class HomeComponent implements OnInit {
     const dialogRef = this.dialog.open(DoneConfirmComponent);
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result) {
+      if (result) {
           this.finish(task);
       }
     });
@@ -357,7 +382,7 @@ export class HomeComponent implements OnInit {
     const dialogRef = this.dialog.open(TaskSharingComponent);
 
     dialogRef.afterClosed().subscribe(result => {
-       if(result) {
+       if (result) {
          this.share(taskIndex, `${result}`);
        }
     });
@@ -372,15 +397,15 @@ export class HomeComponent implements OnInit {
     if (this.ongoingTasks[taskIndex].startTime == null) {
         this.ongoingTasks[taskIndex].startTime = this.ongoingTasks[taskIndex].createTime;
     }
-    var d: number = (Date.now() - Date.parse(this.ongoingTasks[taskIndex].startTime.toString()))/(24*60*60*1000);
-    this.ongoingTasks[taskIndex].history.set(parseInt(d.toString())+1, changed.value);
+    var d: number = (Date.now() - Date.parse(this.ongoingTasks[taskIndex].startTime.toString())) / (24 * 60 * 60 * 1000);
+    this.ongoingTasks[taskIndex].history.set(parseInt(d.toString()) + 1, changed.value);
     this.ongoingTasks[taskIndex].pagesCurrent = changed.value;
     this.taskService.updateReadingTask(this.ongoingTasks[taskIndex]).subscribe(
         data => {
             console.log('Update reading task goes well. stay in current page.')
         },
         error => {
-            console.log('something is wrong: '+ error.message);
+            console.log('something is wrong: ' + error.message);
             this.alertService.error(error.message);
         }
     );
@@ -396,20 +421,20 @@ export class HomeComponent implements OnInit {
   }
 
   share(taskIndex: number, to: string) {
-    console.log("Share to " + to);
-    var node = document.getElementById('Book_'+taskIndex);
+    console.log('Share to ' + to);
+    var node = document.getElementById('Book_' + taskIndex);
     var target = Wechat.Scene.SESSION;
-    if (to == "1") {
+    if (to == '1') {
       target = Wechat.Scene.TIMELINE;
     }
     htmlToImage.toPng(node).then(function (dataUrl) {
         var img = new Image();
         img.src = dataUrl;
-        console.log('Image Url: '+ img);
+        console.log('Image Url: ' + img);
         Wechat.share({
             message: {
-              title: "STEP - Reading a Book",
-              description: "One Book Done",
+              title: 'STEP - Reading a Book',
+              description: 'One Book Done',
               media: {
                 type: Wechat.Type.IMAGE,
                 image: dataUrl
@@ -417,9 +442,9 @@ export class HomeComponent implements OnInit {
             },
             scene: target
         }, function () {
-            alert("Success");
+            alert('Success');
         }, function (reason) {
-            alert("Failed: " + reason);
+            alert('Failed: ' + reason);
         });
       })
       .catch(function (error) {
