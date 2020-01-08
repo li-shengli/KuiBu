@@ -51,7 +51,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                     console.log ('retrive Submitted tasks from localStorage... and oldHistory ');
 
                     const username = localStorage.getItem('currentUserId');
-                    if (task.username == username) {
+                    if (task.username === username) {
 
                         task.history = this.getTaskHistory(task.taskId);
 
@@ -60,7 +60,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                         } else if  (task.taskStatus === 'Executing') {
                             console.log ('retrive Executing tasks from localStorage...');
                             ongoingTasks.push(task);
-                        } else if ((task.taskStatus === 'Pending') {
+                        } else if (task.taskStatus === 'Pending') {
                             console.log ('retrive Pending tasks from localStorage...');
                             pendingTasks.push(task);
                         } else {

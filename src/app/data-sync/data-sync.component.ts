@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { TablestoreService } from '../_helpers';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import * as FileSaver from 'file-saver';
+import { TaskInfo } from '../_models';
 
 @Component({
   selector: 'app-data-sync',
@@ -26,7 +28,17 @@ export class DataSyncComponent implements OnInit {
   }
 
   exportData() {
-    this.tablestoreService.exportLocalDataToAliyun();
+    let content = localStorage.getItem('currentUserId') + '\n';
+    content += localStorage.getItem('currentUser') + '\n';
+    content += localStorage.getItem('tasks') + '\n';
+    content += localStorage.getItem('users') + '\n';
+    const tasks: TaskInfo[] = JSON.parse(localStorage.getItem('tasks')) || [];
+    tasks.forEach( task => {
+      content += task.taskId + ': ' + localStorage.getItem(task.taskId) + '\n';
+    });
+
+    const blob = new Blob([content], {type: 'text/plain;charset=utf-8'});
+    FileSaver.saveAs(blob, 'hello world.txt');
   }
 
 }
